@@ -19,3 +19,6 @@
 
 # Ignore swap file
 *.swp
+
+# Ignore old version
+*-old
