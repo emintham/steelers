@@ -3,5 +3,8 @@
 
 <h3>Home</h3>
 <% @users.each do |user| %>
-  <p>User: <%= user.name %></p>
+  <p>
+  User ID: <%= link_to user.user_id, user%><br/>
+  Email : <%= user.email %>
+  </p>
 <% end %>

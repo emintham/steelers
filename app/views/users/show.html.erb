@@ -1,0 +1,5 @@
+<% content_for :title do %> <%= @user.user_id %>- Home Page <% end %>
+
+<h3><%= @user.user_id %></h3>
+<p>Username: <%= @user.name if @user.name %></p>
+<p>Email: <%= @user.email %></p>
