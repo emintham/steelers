@@ -1,4 +1,13 @@
 Steelers::Application.routes.draw do
+  resources :logs
+
+
+  resources :servers
+
+
+  resources :jobs
+
+
   authenticated :user do
      root :to => 'home#index'
   end
