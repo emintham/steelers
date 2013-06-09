@@ -1,0 +1,12 @@
+<h2>Create Job</h2>
+<%= simple_form_for [@user, @job] do |f| %>
+  <%= f.error_notification %>
+  <%= display_base_errors resource %>
+  <%= f.input :server, :autofocus => true %>
+  <%= f.association :program %>
+  <%= f.association :input %>
+  <%= f.input :description, as: :text %>
+  <%= f.input_field :status, :as => :boolean, 
+              :inline_label => 'Start now?' %>
+  <%= f.button :submit %>
+<% end %>

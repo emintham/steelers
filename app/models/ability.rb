@@ -32,6 +32,13 @@ class Ability
     user ||= User.new
     if user.has_role? :admin
       can :manage, :all
+    else
+      can :read, Job, :user_id => user.user_id
+      can :create, Job
+      can :destroy, Job, :user_id => user.user_id
+      can :read, Log, :user_id => user.user_id
+      can :create, Log
+      can :destroy, Log, :user_id => user.user_id
     end
   end
 end

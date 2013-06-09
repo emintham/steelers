@@ -22,3 +22,6 @@
 
 # Ignore old version
 *-old
+
+# Ignore tags
+tags

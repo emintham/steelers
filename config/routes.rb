@@ -1,20 +1,20 @@
 Steelers::Application.routes.draw do
-  resources :logs
-
-
-  resources :servers
-
-
-  resources :jobs
-
-
   authenticated :user do
      root :to => 'home#index'
   end
-  root :to => 'home#index'
   
   devise_for :users
-  resources :users
+  devise_scope :user do
+     root :to => "devise/sessions#new"
+  end
+
+  resources :users do
+     resources :jobs do
+        post 'start'
+     end
+     resources :logs
+  end
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
