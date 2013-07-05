@@ -1,12 +1,14 @@
-<% content_for :title do %>Steelers- Login<% end %>
-<% content_for :description do %>Login to start or view jobs<% end %>
+<div class="container" id="login-form">
+  <% content_for :title do %>Steelers- Login<% end %>
+  <% content_for :description do %>Login to start or view jobs<% end %>
 
-<h2>Login</h2>
-<%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-vertical' }) do |f| %>
-  <%= f.input :user_id, :autofocus => true, label: 'User Id' %>
-  <%= f.input :password %>
-  <%= f.input_field :remember_me, :as => :boolean, 
-    :inline_label => 'Remember me' if devise_mapping.rememberable? %>
-  <%= f.button :submit, "Sign in", :class => 'btn-primary' %>
-<% end %>
-<%= render "devise/shared/links" %>
+  <h2>Login</h2>
+  <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-vertical' }) do |f| %>
+    <%= f.input :user_id, :autofocus => true, label: 'User Id' %>
+    <%= f.input :password %>
+    <%= f.input_field :remember_me, :as => :boolean, 
+      :inline_label => 'Remember me' if devise_mapping.rememberable? %>
+    <%= f.button :submit, "Sign in", :class => 'btn-primary' %>
+  <% end %>
+  <%= render "devise/shared/links" %>
+</div>

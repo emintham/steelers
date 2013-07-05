@@ -1,0 +1,57 @@
+<h2>Jobs</h2>
+
+<div class="span8">
+  <h2>Job Queue</h2>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Job Id</th>
+        <th>User Id</th>
+        <th>Server</th>
+        <th>Input</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Started at</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% Job.all.each do |job| %>
+        <tr>
+          <td><%= job.id %></td>
+          <td><%= job.user_id %></td>
+          <td><%= Server.find(job.server_id).name %></td>
+          <td><%= job.input %></td>
+          <td><%= job.description %></td>
+          <td><%= job.status ? "Running" : "Stopped" %></td>
+          <td><%= job.created_at.to_date %></td>
+          <td>
+            <% if job.status %>
+              <%= link_to 'Stop job', user_job_path(job),
+                      :data => { :confirm => 'Are you sure?' }, 
+                      :method => :delete, :class => 'btn btn-mini' %>
+            <% else %>
+              <%= link_to 'Start job', user_job_start_path(job),
+                      :class => 'btn btn-mini' %>
+            <% end %>
+          </td>
+          <td><%= link_to 'Create log', new_user_log_path %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <%= link_to 'Create job', new_user_job_path(@user),
+                  :class => 'btn btn-mini' %>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

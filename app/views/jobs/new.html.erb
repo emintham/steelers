@@ -1,10 +1,15 @@
 <h2>Create Job</h2>
 <%= simple_form_for [@user, @job] do |f| %>
   <%= f.error_notification %>
-  <%= display_base_errors resource %>
-  <%= f.input :server, :autofocus => true %>
-  <%= f.association :program %>
-  <%= f.association :input %>
+  <%= f.input :server_id, :collection => Server.all, 
+              :label_method => :name,
+              :value_method => :id, 
+              :as => :radio_buttons, :autofocus => true %>
+  <%= f.association :program, :as => :radio_buttons %>
+  <% user_dir = Rails.root.join('u', @user.user_id).to_s %>
+  <% pattern = File.join(user_dir, '*') %>
+  <% inputs = Dir.glob(pattern).map { |f| File.basename(f) } %>
+  <%= f.input :input, :collection => inputs %>
   <%= f.input :description, as: :text %>
   <%= f.input_field :status, :as => :boolean, 
               :inline_label => 'Start now?' %>

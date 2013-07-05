@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
+  # ---------- Authentication/Authorization ---------------------------
   rolify
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -9,6 +11,7 @@ class User < ActiveRecord::Base
   attr_accessible :user_id, :name, :affiliation, :specialisation,
      :email, :password, :password_confirmation, :remember_me
   
+  # ------------------ Associations -----------------------------------
   # restrict deletion of users if user has outstanding jobs
   has_many :jobs, :order => :id, :dependent => :restrict
   accepts_nested_attributes_for :jobs, 
@@ -24,22 +27,19 @@ class User < ActiveRecord::Base
      :uniqueness => true,
      :presence => { :on => :create }
 
-  validates :email,
-     :uniqueness => { :allow_blank => true },
-     :format => { :with => /@/, :on => :create, :allow_blank => true }
-
-  # Create directory for user after creation of user
-  after_create :create_dir
-  
-  protected
-  def create_dir
-     user_dir = Rails.root.join('u', user_id).to_s
-     permission = 0700
-     if File.directory?(user_dir)
-        logger.info "<DEV INFO> #{user_id} already has directory!"
-     else
-        Dir.mkdir(user_dir,permission)
-        logger.info "<DEV INFO> <RAILS_ROOT>/u/#{user_id}/ created!"
-     end
-  end
+  # -------------------- Initialization -------------------------------
+  ## Create directory for user after creation of user
+  #after_create :create_dir
+  #
+  #protected
+  #def create_dir
+  #   user_dir = Rails.root.join('u', user_id).to_s
+  #   permission = 0700
+  #   if File.directory?(user_dir)
+  #      logger.info "<DEV INFO> #{user_id} already has directory!"
+  #   else
+  #      Dir.mkdir(user_dir,permission)
+  #      logger.info "<DEV INFO> <RAILS_ROOT>/u/#{user_id}/ created!"
+  #   end
+  #end
 end

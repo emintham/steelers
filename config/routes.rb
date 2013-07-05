@@ -10,11 +10,11 @@ Steelers::Application.routes.draw do
 
   resources :users do
      resources :jobs do
-        post 'start'
+        member { post :run }
      end
+
      resources :logs
   end
-
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

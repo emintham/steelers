@@ -5,94 +5,119 @@
 <p>Current time: <%= Time.now %></p>
 
 <div class="span8">
-  <h2>Job Queue</h2>
-  <table class="table table-condensed">
-    <thead>
-      <tr>
-        <th>Job Id</th>
-        <th>Server</th>
-        <th>Input</th>
-        <th>Description</th>
-        <th>Status</th>
-        <th>Started at</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @user.jobs.each do |job| %>
-        <tr>
-          <td><%= job.id %></td>
-          <td><%= Server.find(job.server_id).name %></td>
-          <td><%= job.input %></td>
-          <td><%= job.description %></td>
-          <td><%= job.status ? "Running" : "Stopped" %></td>
-          <td><%= job.created_at.to_date %></td>
-          <td>
-            <% if job.status %>
-              <%= link_to 'Stop job', job_path(job),
+  <div class="accordion" id="accordion1">
+    <div class="accordion-group"> <!-- Job Queue -->
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
+          Job Queue
+        </a>
+      </div> <!-- accordion heading -->
+      <div id="collapseOne" class="accordion-body collapse-in">
+        <div class="accordion-inner">
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Job Id</th>
+                <th>Server</th>
+                <th>Program</th>
+                <th>Input</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Started at</th>
+                <th>Completed?</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @user.jobs.each do |job| %>
+                <tr>
+                  <td><%= job.id %></td>
+                  <td><%= Server.find(job.server_id).name %></td>
+                  <td><%= Program.find(job.program_id).name %></td>
+                  <td><%= File.basename(job.input) %></td>
+                  <td><%= job.description %></td>
+                  <td><%= job.status ? "Running" : "Stopped" %></td>
+                  <td><%= job.created_at.to_date %></td>
+                  <td><%= job.completed ? "True" : "False" %></td>
+                  <td>
+                    <% if job.status %>
+                      <%= link_to 'Stop job', user_job_path(@user, job),
+                        :data => { :confirm => 'Are you sure?' }, 
+                        :method => :delete, :class => 'btn btn-mini' %>
+                    <% elsif !job.completed %>
+                      <%= link_to 'Start job', run_user_job_path(@user, job),
+                        :method => :post, :id => job.id, :user_id => @user.id,
+                        :class => 'btn btn-mini' %>
+                    <% end %>
+                  </td>
+                  <td></td>
+                </tr>
+              <% end %>
+              <tr>
+                <td></td>
+                <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <%= link_to 'Create job', new_user_job_path(@user),
+                  :class => 'btn btn-mini' %>
+              </td>
+              <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div> <!-- accordion-inner -->
+      </div> <!-- accordion-body -->
+    </div> <!-- accordion-group -->
+
+    <div class="accordion-group"> <!-- Logs --->
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+          Logs
+        </a>
+      </div> <!-- accordion-heading -->
+      <div id="collapseTwo" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Log Id</th>
+                <th>Job Id</th>
+                <th>Server Name</th>
+                <th>Input</th>
+                <th>Output</th>
+                <th>Created at</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @user.logs.each do |log| %>
+                <tr>
+                  <td><%= log.id %></td>
+                  <td><%= log.job_id %></td>
+                  <td><%= Server.find(log.server_id).name %></td>
+                  <td><%= log.input %></td>
+                  <td><%= log.output %></td>
+                  <td><%= log.created_at.to_date %></td>
+                  <td>
+                    <a data-toggle="modal" href="#plot" class="btn btn-mini" 
+                      type="button">Plot Options</a>
+                  </td>
+                  <td>
+                    <%= link_to 'Delete', log_path(log), 
                       :data => { :confirm => 'Are you sure?' }, 
                       :method => :delete, :class => 'btn btn-mini' %>
-            <% else %>
-              <%= link_to 'Start job', user_job_start_path(job),
-                      :class => 'btn btn-mini' %>
-            <% end %>
-          </td>
-          <td><%= link_to 'Create log', new_user_log_path %></td>
-        </tr>
-      <% end %>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-          <%= link_to 'Create job', new_user_job_path(@user),
-                  :class => 'btn btn-mini' %>
-        </td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="span8">
-  <h2>Logs</h2>
-  <table class="table table-condensed">
-    <thead>
-      <tr>
-        <th>Log Id</th>
-        <th>Job Id</th>
-        <th>Server Name</th>
-        <th>Input</th>
-        <th>Output</th>
-        <th>Created at</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @user.logs.each do |log| %>
-        <tr>
-          <td><%= log.id %></td>
-          <td><%= log.job_id %></td>
-          <td><%= Server.find(log.server_id).name %></td>
-          <td><%= log.input %></td>
-          <td><%= log.output %></td>
-          <td><%= log.created_at.to_date %></td>
-          <td>
-            <a data-toggle="modal" href="#plot" class="btn btn-mini" 
-              type="button">Plot Options</a>
-          </td>
-          <td>
-            <%= link_to 'Delete', log_path(log), 
-              :data => { :confirm => 'Are you sure?' }, 
-              :method => :delete, :class => 'btn btn-mini' %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div> <!-- accordion-inner -->
+      </div> <!-- accordion-body -->
+    </div> <!-- accordion-group -->
+  </div> <!-- accordion -->
 </div>

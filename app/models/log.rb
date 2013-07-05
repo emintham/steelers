@@ -1,10 +1,11 @@
 class Log < ActiveRecord::Base
-  attr_accessible :input, :output
+  attr_accessible :input, :output, :job_id, :user_id, :server_id
 
+  # ----------------- Associations -------------------------------------
   belongs_to :job
   belongs_to :user
   belongs_to :server
 
-  validates_presence_of :user_id, :job_id, :server_id
+  # ----------------- Validations ---------------------------------------
   validates_associated :user, :job, :server
 end
