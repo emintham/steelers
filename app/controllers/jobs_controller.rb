@@ -13,7 +13,8 @@ class JobsController < ApplicationController
        flash[:notice] = "Job created successfully!"
        if @job.status
           flash[:notice] = 'Starting job now...'
-          @job.delay.run
+          @job.run
+          flash[:notice] = 'Job completed!'
        else
           flash[:notice] = 'Job saved for later...'
        end
@@ -41,9 +42,10 @@ class JobsController < ApplicationController
 
   def run
     @job = User.find(params[:user_id]).jobs.find(params[:id])
-    @job.delay.run
-
     flash[:notice] = 'Starting job now...'
+    @job.run
+    flash[:notice] = 'Job completed!'
+
     redirect_to root_url
   end
 end

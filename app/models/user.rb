@@ -29,17 +29,17 @@ class User < ActiveRecord::Base
 
   # -------------------- Initialization -------------------------------
   ## Create directory for user after creation of user
-  #after_create :create_dir
-  #
-  #protected
-  #def create_dir
-  #   user_dir = Rails.root.join('u', user_id).to_s
-  #   permission = 0700
-  #   if File.directory?(user_dir)
-  #      logger.info "<DEV INFO> #{user_id} already has directory!"
-  #   else
-  #      Dir.mkdir(user_dir,permission)
-  #      logger.info "<DEV INFO> <RAILS_ROOT>/u/#{user_id}/ created!"
-  #   end
-  #end
+  after_create :create_dir
+  
+  protected
+  def create_dir
+     user_dir = Rails.root.join('u', user_id).to_s
+     permission = 0700
+     if File.directory?(user_dir)
+        logger.info "<DEV INFO> #{user_id} already has directory!"
+     else
+        Dir.mkdir(user_dir,permission)
+        logger.info "<DEV INFO> <RAILS_ROOT>/u/#{user_id}/ created!"
+     end
+  end
 end

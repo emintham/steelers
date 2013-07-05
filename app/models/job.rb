@@ -32,8 +32,9 @@ class Job < ActiveRecord::Base
          '_' + id.to_s + '.out'
 
       exec_path = Rails.root.join('bin', prog_name).to_s
-      input_path = input
-      output_path = Rails.root.join('u', @user.user_id, output).to_s
+      userid = User.find(user_id).user_id
+      input_path = Rails.root.join('u', userid, input).to_s
+      output_path = Rails.root.join('u', userid, output).to_s
 
       Rails.logger.info "<DEV INFO> input_path: #{input_path}"
       Rails.logger.info "<DEV INFO> output_path: #{output_path}"
@@ -42,6 +43,7 @@ class Job < ActiveRecord::Base
          %x[#{exec_path} > #{output_path}]
       else
          %x[#{exec_path} < #{input_path} > #{output_path}]
+         Rails.logger.info "<DEV INFO> command is: #{exec_path} < #{input_path} > #{output_path}"
       end
       update_attribute(:status, false)
       update_attribute(:completed, true)

@@ -1,39 +1,50 @@
 <% content_for :title do %>Administrator's Dashboard<% end %>
 
-<h3>Users</h3>
-<div class="span8">
-   <table class="table table-condensed">
-      <thead>
-         <tr>
-            <th>Name</th>
-            <th>User ID</th>
-            <th>Email</th>
-            <th>Affiliation</th>
-            <th>Specialisation</th>
-            <th>Num Jobs</th>
-            <th>Registered</th>
-            <th>Role</th>
-            <th></th>
-            <th></th>
-         </tr>
-      </thead>
-      <tbody>
-         <% @users.each do |user| %>
+<div class="accordion" id="accordion2">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        Users
+      </a>
+    </div> <!-- accordion toggle -->
+    <div id="collapseOne" class="accordion-body collapse in">
+      <div class="accordion-inner">
+        <table class="table table-condensed">
+          <thead>
             <tr>
-               <td><%= user.name %></td>
-               <td><%= link_to user.user_id, user %></td>
-               <td><%= user.email %></td>
-               <td><%= user.affiliation %></td>
-               <td><%= user.specialisation %></td>
-               <td><%= user.num_jobs %></td>
-               <td><%= user.created_at.to_date %></td>
-               <td><%= user.roles.first.name.titleize unless user.roles.first.nil? %></td>
-               <td>
-                  <%= link_to("Delete User", user_path(user), :data => { :confirm => "Are you sure?" }, :method => "delete", :class => 'btn btn-mini') unless user == current_user %>
-               </td>
+              <th>Name</th>
+              <th>User ID</th>
+              <th>Email</th>
+              <th>Affiliation</th>
+              <th>Specialisation</th>
+              <th>Num Jobs</th>
+              <th>Registered</th>
+              <th>Role</th>
+              <th></th>
+              <th></th>
             </tr>
-         <% end %>
-      </tbody>
-   </table>
-</div>
-
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td><%= user.name %></td>
+                <td><%= link_to user.user_id, user %></td>
+                <td><%= user.email %></td>
+                <td><%= user.affiliation %></td>
+                <td><%= user.specialisation %></td>
+                <td><%= user.num_jobs %></td>
+                <td><%= user.created_at.to_date %></td>
+                <td><%= user.roles.first.name.titleize unless user.roles.first.nil? %></td>
+                <td>
+                  <%= link_to("Delete User", user_path(user), :data => { :confirm => "Are you sure?" }, :method => "delete", :class => 'btn btn-mini') unless user == current_user %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div> <!-- accordion inner -->
+    </div> <!-- collapseOne -->
+  </div> <!-- accordion group -->
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle">
