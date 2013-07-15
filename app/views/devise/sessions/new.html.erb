@@ -3,7 +3,7 @@
   <% content_for :description do %>Login to start or view jobs<% end %>
 
   <h2>Login</h2>
-  <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-vertical' }) do |f| %>
+  <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-login' }) do |f| %>
     <%= f.input :user_id, :autofocus => true, label: 'User Id' %>
     <%= f.input :password %>
     <%= f.input_field :remember_me, :as => :boolean, 

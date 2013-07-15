@@ -1,0 +1,28 @@
+<% content_for :title do %>Administrator's Dashboard<% end %>
+
+<div class="accordion" id="accordion2">
+  <div class="accordion-group"> <!-- Users -->
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        Users
+      </a>
+    </div> <!-- accordion toggle -->
+    <div id="collapseOne" class="accordion-body collapse in">
+      <div class="accordion-inner">
+        <% render users %>
+      </div> <!-- accordion inner -->
+    </div> <!-- collapseOne -->
+  </div> <!-- accordion group -->
+  <div class="accordion-group"> <!-- Servers -->
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        Servers
+      </a>
+    </div> <!-- accordion toggle -->
+    <div id="collapseTwo" class="accordion-body collapse">
+      <div class="accordion-inner">
+        <% render servers %>
+      </div> <!-- accordion inner -->
+    </div> <!-- collapseTwo -->
+  </div> <!-- accordion group -->
+</div> <!-- accordion -->

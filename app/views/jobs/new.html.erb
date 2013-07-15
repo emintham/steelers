@@ -3,15 +3,17 @@
   <%= f.error_notification %>
   <%= f.input :server_id, :collection => Server.all, 
               :label_method => :name,
-              :value_method => :id, 
-              :as => :radio_buttons, :autofocus => true %>
-  <%= f.association :program, :as => :radio_buttons %>
+              :value_method => :id %>
+  <%= f.association :program %>
+  <%= f.input :password, :label => 'Server Password', 
+    hint: 'This is not stored anywhere in the application' %>
   <% user_dir = Rails.root.join('u', @user.user_id).to_s %>
   <% pattern = File.join(user_dir, '*') %>
   <% inputs = Dir.glob(pattern).map { |f| File.basename(f) } %>
   <%= f.input :input, :collection => inputs %>
-  <%= f.input :description, as: :text %>
+  <%= f.input :description, as: :text, 
+    :input_html => {style: 'height:40px;' }%>
   <%= f.input_field :status, :as => :boolean, 
-              :inline_label => 'Start now?' %>
+    :inline_label => 'Start now?' %>
   <%= f.button :submit %>
 <% end %>

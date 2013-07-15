@@ -1,7 +1,3 @@
-// Place all the styles related to the Jobs controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
 .simple_form {
   div.input {
     margin-bottom: 10px;
@@ -39,10 +35,9 @@ label.collection_radio_buttons {
 .simple_form {
   .error {
     clear: left;
-    margin-left: 120px;
-    color: #555;
+    color: black;
     display: block;
-    font-style: italic;
+    margin-left: 120px;
   }
   .hint {
     clear: left;

@@ -4,7 +4,8 @@
   <%= display_base_errors resource %>
   <%= f.input :user_id, :autofocus => true, :required => true %>
   <%= f.input :email, :required => true %>
-  <%= f.input :password, :required => true %>
+  <%= f.input :password, :required => true, 
+    :hint => 'This does not have to be the same as your server password' %>
   <%= f.input :password_confirmation, :required => true %>
   <%= f.input :name %>
   <%= f.input :affiliation %>
