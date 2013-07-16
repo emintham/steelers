@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @conf.name %>
+</p>
+
+<p>
+  <b>Program:</b>
+  <%= @conf.program %>
+</p>
+
+
+<%= link_to 'Edit', edit_conf_path(@conf) %> |
+<%= link_to 'Back', confs_path %>

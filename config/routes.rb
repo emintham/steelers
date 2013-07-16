@@ -1,4 +1,7 @@
 Steelers::Application.routes.draw do
+  resources :confs
+
+
   resources :config_templates
 
   #resource :admins
