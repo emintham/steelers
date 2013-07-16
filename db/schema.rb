@@ -11,9 +11,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130705203843) do
+ActiveRecord::Schema.define(:version => 20130716173157) do
 
   create_table "admins", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "config_params", :force => true do |t|
+    t.string   "name"
+    t.string   "param_type"
+    t.boolean  "required"
+    t.integer  "config_template_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "config_params", ["config_template_id"], :name => "index_config_params_on_config_template_id"
+
+  create_table "config_templates", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

@@ -1,0 +1,9 @@
+<%= simple_form_for @config_template do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :name, :autofocus => true, :required => true %>
+  <%= f.fields_for :fields do |builder| %>
+    <%= render 'field_fields', f: builder %>
+  <% end %>
+  <%= link_to_add_fields "Add Field", f, :fields %>
+  <%= f.button :submit %>
+<% end %>

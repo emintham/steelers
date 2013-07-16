@@ -1,5 +1,7 @@
 Steelers::Application.routes.draw do
-  resource :admins
+  resources :config_templates
+
+  #resource :admins
 
   authenticated :user do
      root :to => 'home#index'
