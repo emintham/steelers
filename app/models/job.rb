@@ -40,10 +40,20 @@ class Job < ActiveRecord::Base
       Rails.logger.info "<DEV INFO> output_path: #{output_path}"
 
       if input == ''
-         %x[#{exec_path} > #{output_path}]
+         # %x[#{exec_path} > #{output_path}]
+         Net::SSH.start(server.name, ENV['APP_UID'], :password => ENV['APP_PASSWORD']) do |ssh|
+            result = ssh.exec!("ls -l")
+            Rails.logger.info "<DEV INFO> ssh output:"
+            Rails.logger.info result
+         end
       else
          %x[#{exec_path} < #{input_path} > #{output_path}]
          Rails.logger.info "<DEV INFO> command is: #{exec_path} < #{input_path} > #{output_path}"
+         Net::SSH.start(server.name, ENV['APP_UID'], :password => ENV['APP_PASSWORD']) do |ssh|
+            result = ssh.exec!("ls -l")
+            Rails.logger.info "<DEV INFO> ssh output:"
+            Rails.logger.info result
+         end
       end
       update_attribute(:status, false)
       update_attribute(:completed, true)

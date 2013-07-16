@@ -5,8 +5,6 @@
               :label_method => :name,
               :value_method => :id %>
   <%= f.association :program %>
-  <%= f.input :password, :label => 'Server Password', 
-    hint: 'This is not stored anywhere in the application' %>
   <% user_dir = Rails.root.join('u', @user.user_id).to_s %>
   <% pattern = File.join(user_dir, '*') %>
   <% inputs = Dir.glob(pattern).map { |f| File.basename(f) } %>
