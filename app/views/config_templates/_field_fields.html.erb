@@ -1,7 +1,8 @@
 <fieldset>
-  <%= f.select :param_type, %w{text check_box integer float} %>
+  <%= f.select :param_type, %w{text boolean number} %>
   <%= f.text_field :name, placeholder: 'parameter name' %>
-  <%= f.check_box :required %><%= f.label :required %>
   <%= f.hidden_field :_destroy %>
+  <%= f.input_field :required, :as => :boolean, 
+    :inline_label => 'Required?' %>
   <%= link_to '[remove]', '#', class: 'remove_fields' %>
 </fieldset>

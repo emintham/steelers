@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130716175327) do
+ActiveRecord::Schema.define(:version => 20130717183531) do
 
   create_table "admins", :force => true do |t|
     t.datetime "created_at", :null => false
@@ -33,16 +33,16 @@ ActiveRecord::Schema.define(:version => 20130716175327) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "program_id"
   end
 
   create_table "confs", :force => true do |t|
     t.string   "name"
-    t.integer  "program_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.integer  "config_template_id"
+    t.text     "properties"
   end
-
-  add_index "confs", ["program_id"], :name => "index_confs_on_program_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0

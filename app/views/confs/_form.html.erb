@@ -1,9 +1,15 @@
-<%= simple_form_for(@conf) do |f| %>
+<%= simple_form_for @conf do |f| %>
   <%= f.error_notification %>
+
+  <%= f.hidden_field :config_template_id %>
 
   <div class="form-inputs">
     <%= f.input :name %>
-    <%= f.association :program %>
+    <%= f.fields_for :properties, OpenStruct.new(@conf.properties) do |builder| %>
+      <% @conf.config_template.fields.each do |field| %>
+        <%= render "confs/fields/#{field.param_type}", field: field, f: builder %>
+      <% end %>
+    <% end %>
   </div>
 
   <div class="form-actions">

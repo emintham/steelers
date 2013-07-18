@@ -4,6 +4,7 @@ class Program < ActiveRecord::Base
   # ------------------ Associations ------------------------------------
   has_many :jobs
   belongs_to :server
+  has_one :config_template
 
   # ------------------ Validations -------------------------------------
   validates :name,

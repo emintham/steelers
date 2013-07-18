@@ -24,7 +24,7 @@ class ConfsController < ApplicationController
   # GET /confs/new
   # GET /confs/new.json
   def new
-    @conf = Conf.new
+    @conf = Conf.new(config_template_id: params[:config_template_id])
 
     respond_to do |format|
       format.html # new.html.erb

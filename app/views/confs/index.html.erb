@@ -1,25 +1,15 @@
 <h1>Listing confs</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Program</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<% if @confs.empty? %>
+  No configs available
+<% end %>
 
 <% @confs.each do |conf| %>
-  <tr>
-    <td><%= conf.name %></td>
-    <td><%= conf.program %></td>
-    <td><%= link_to 'Show', conf %></td>
-    <td><%= link_to 'Edit', edit_conf_path(conf) %></td>
-    <td><%= link_to 'Destroy', conf, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+  <%= conf.name %>
 <% end %>
-</table>
 
-<br />
-
-<%= link_to 'New Conf', new_conf_path %>
+<%= form_tag new_conf_path, method: :get do %>
+  <%= select_tag :config_template_id, 
+    options_from_collection_for_select(ConfigTemplate.all, :id, :name) %>
+  <%= submit_tag "New Config", name: nil %>
+<% end %>
