@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :logs, 
      :allow_destroy => true
 
+  has_many :confs, :order => :id
+  accepts_nested_attributes_for :confs,
+     :allow_destroy => true
+
   # ------------------- Validations -----------------------------------
   validates :user_id,
      :uniqueness => true,

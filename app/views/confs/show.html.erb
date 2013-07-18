@@ -5,11 +5,6 @@
   <%= @conf.name %>
 </p>
 
-<p>
-  <b>Program:</b>
-  <%= @conf.program %>
-</p>
-
 <% @conf.properties.each do |name, value| %>
   <p>
   <b><%= name.humanize %>:</b>

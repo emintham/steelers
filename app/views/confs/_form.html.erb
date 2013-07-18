@@ -7,7 +7,9 @@
     <%= f.input :name %>
     <%= f.fields_for :properties, OpenStruct.new(@conf.properties) do |builder| %>
       <% @conf.config_template.fields.each do |field| %>
-        <%= render "confs/fields/#{field.param_type}", field: field, f: builder %>
+        <% unless (field.param_type == 'comma' || field.param_type == 'newline') %>
+          <%= render "confs/fields/#{field.param_type}", field: field, f: builder %>
+        <% end %>
       <% end %>
     <% end %>
   </div>

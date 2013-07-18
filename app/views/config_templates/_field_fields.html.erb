@@ -1,8 +1,9 @@
 <fieldset>
-  <%= f.select :param_type, %w{text boolean number} %>
+  <%= f.select :param_type, %w{text boolean number comma newline} %>
   <%= f.text_field :name, placeholder: 'parameter name' %>
   <%= f.hidden_field :_destroy %>
   <%= f.input_field :required, :as => :boolean, 
-    :inline_label => 'Required?' %>
-  <%= link_to '[remove]', '#', class: 'remove_fields' %>
+    :inline_label => 'Required?', 
+    :input_html => { :value => true } %>
+  <%= link_to 'remove', '#', class: 'remove_fields btn btn-mini' %>
 </fieldset>
