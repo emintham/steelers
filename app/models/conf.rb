@@ -16,11 +16,12 @@ class Conf < ActiveRecord::Base
   def validate_properties
     config_template.fields.each do |field|
       if field.required? && properties[field.name].blank?
-        errors.add field.name, "must not be blank" unless (field.param_type == 'comma' || field.param_type == 'newline')
+        errors.add field.name, "must not be blank" unless field.separator?
       end
     end
   end
 
+  protected
   def write_to_file
     # Filename should not contain spaces
     filepath = Rails.root.join('confs', name.gsub(/ /, '_')).to_s
@@ -30,6 +31,8 @@ class Conf < ActiveRecord::Base
       config_template.fields.each do |field|
         if (field.param_type == 'text' || field.param_type == 'number')
           f.write(properties[field.name])
+        elsif field.param_type == 'space'
+          f.write(" ")
         elsif field.param_type == 'comma'
           f.write(", ")
         elsif field.param_type == 'newline'

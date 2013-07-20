@@ -73,6 +73,12 @@ class ConfigTemplatesController < ApplicationController
   # DELETE /config_templates/1.json
   def destroy
     @config_template = ConfigTemplate.find(params[:id])
+    filename = @config_template.name.gsub(/ /, '_')
+    filepath = Rails.root.join('config_templates', filename).to_s
+    if File.exists?(filepath)
+      File.delete(filepath)
+      Rails.logger.info "<DEV INFO> deleted config_template: #{filename}"
+    end
     @config_template.destroy
 
     respond_to do |format|

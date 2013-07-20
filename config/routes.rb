@@ -1,7 +1,5 @@
 Steelers::Application.routes.draw do
   resources :confs
-
-
   resources :config_templates
 
   #resource :admins
@@ -19,7 +17,7 @@ Steelers::Application.routes.draw do
      resources :jobs do
         member { post :run }
      end
-
+     
      resources :logs
   end
 

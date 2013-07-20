@@ -1,0 +1,23 @@
+<!-- Button to trigger modal -->
+<a href="#fileModal" role="button" class="btn btn-mini" data-toggle="modal">
+  View Rendered Config
+</a>
+
+<!-- Modal -->
+<div id="fileModal" class="modal hide fade" tabindex="-1" role="dialog"
+  aria-labelledby="fileModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"
+      aria-hidden="true">×</button>
+    <h3 id="fileModalLabel">Rendered Config</h3>
+  </div> <!-- modal-header -->
+  <div class="modal-body">
+<pre>
+<% filepath = Rails.root.join('confs', @conf.name.gsub(/ /, '_')).to_s %>
+<%= render :file => filepath %>
+</pre>
+  </div> <!-- modal-body -->
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div> <!-- modal-footer -->
+</div> <!-- fileModal -->

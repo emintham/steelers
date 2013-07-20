@@ -4,7 +4,11 @@
   <b>Name:</b>
   <%= @config_template.name %>
 </p>
+<pre>
+<% filepath = Rails.root.join('config_templates', @config_template.name.gsub(/ /, '_')).to_s %>
+<%= render :file => filepath %>
+</pre>
 
-
-<%= link_to 'Edit', edit_config_template_path(@config_template) %> |
-<%= link_to 'Back', config_templates_path %>
+<%= link_to 'Edit', edit_config_template_path(@config_template),
+  class: 'btn btn-mini' %>
+<%= link_to 'Back', config_templates_path, class: 'btn btn-mini' %>

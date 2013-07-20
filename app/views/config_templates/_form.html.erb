@@ -2,7 +2,7 @@
   <%= f.error_notification %>
   <div class="form-inputs">
     <%= f.input :name, :autofocus => true, :required => true %>
-    <%= f.association :program %>
+    <%= f.association :program, :required => true %>
     <%= f.fields_for :fields do |builder| %>
       <%= render 'field_fields', f: builder %>
     <% end %>

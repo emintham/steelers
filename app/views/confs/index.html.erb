@@ -1,15 +1,13 @@
-<h1>Listing confs</h1>
-
-<% if @confs.empty? %>
-  No configs available
-<% end %>
-
-<% @confs.each do |conf| %>
-  <%= conf.name %>
-<% end %>
+<h1>Configurations</h1>
 
 <%= form_tag new_conf_path, method: :get do %>
   <%= select_tag :config_template_id, 
     options_from_collection_for_select(ConfigTemplate.all, :id, :name) %>
-  <%= submit_tag "New Config", name: nil %>
+  <%= submit_tag "Create", name: nil %>
+<% end %>
+
+<% if @confs.empty? %>
+  No configs available
+<% else %>
+  <%= render 'conf_table' %>
 <% end %>

@@ -73,6 +73,12 @@ class ConfsController < ApplicationController
   # DELETE /confs/1.json
   def destroy
     @conf = Conf.find(params[:id])
+    filename = @conf.name.gsub(/ /, '_')
+    filepath = Rails.root.join('conf', filename).to_s
+    if File.exists?(filepath)
+      File.delete(filepath)
+      Rails.logger.info "<DEV INFO> deleted conf: #{filename}"
+    end
     @conf.destroy
 
     respond_to do |format|
