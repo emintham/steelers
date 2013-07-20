@@ -28,5 +28,6 @@ tags
 
 # Ignore /u, /confs, /config_template
 /u
-/conf
-/config_template
+/confs
+/config_templates
+
