@@ -51,7 +51,6 @@ end
 group :test do
    gem 'database_cleaner'
    gem 'email_spec'
-   gem 'cucumber-rails', :require => false
    gem 'launchy'
    gem 'capybara'
 end
@@ -64,3 +63,4 @@ gem 'simple_form'
 gem 'figaro'
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem 'gollum'                           # wiki

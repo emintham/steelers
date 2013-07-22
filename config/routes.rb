@@ -1,4 +1,6 @@
 Steelers::Application.routes.draw do
+  mount Precious::App, at: 'wiki'
+
   resources :confs
   resources :config_templates
 
