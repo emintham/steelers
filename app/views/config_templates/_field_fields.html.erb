@@ -1,6 +1,8 @@
 <fieldset>
-  <%= f.select :param_type, %w{text boolean number comma newline space} %>
-  <%= f.text_field :name, placeholder: 'parameter name' %>
+  <%= f.select :param_type, %w{text boolean number comma newline space},
+    placeholder: "Parameter Type" %>
+  <%= f.text_field :name, placeholder: "Parameter Name" %>
+  <%= f.text_field :description, placeholder: "Description" %>
   <%= f.hidden_field :_destroy %>
   <%= f.input_field :required, :as => :boolean, 
     :inline_label => 'Required?', 
