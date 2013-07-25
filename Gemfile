@@ -63,6 +63,6 @@ gem 'simple_form'
 gem 'figaro'
 # gem 'delayed_job_active_record'
 gem 'daemons'
-#gem 'RedCloth'
-gem 'github-markdown'
+gem 'github-markdown'                  # markdown for wiki
 gem 'gollum'                           # wiki
+gem 'carrierwave'                      # File uploads
