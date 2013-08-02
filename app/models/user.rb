@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :confs,
      :allow_destroy => true
 
+  has_many :userfiles, :order => :id
+  accepts_nested_attributes_for :userfiles,
+     :allow_destroy => true
+
   # ------------------- Validations -----------------------------------
   validates :user_id,
      :uniqueness => true,

@@ -14,8 +14,10 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
 
+  gem 'bootstrap-sass'
+  gem 'twitter-bootstrap-rails'
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
+  gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
 end
@@ -55,7 +57,6 @@ group :test do
    gem 'capybara'
 end
 
-gem 'bootstrap-sass'
 gem 'devise'
 gem 'cancan'
 gem 'rolify'
@@ -63,6 +64,7 @@ gem 'simple_form'
 gem 'figaro'
 # gem 'delayed_job_active_record'
 gem 'daemons'
-gem 'github-markdown'                  # markdown for wiki
-gem 'gollum'                           # wiki
-gem 'carrierwave'                      # File uploads
+gem 'github-markdown'
+gem 'gollum'
+gem 'carrierwave'
+gem 'execjs'
