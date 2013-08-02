@@ -64,7 +64,7 @@ gem 'simple_form'
 gem 'figaro'
 # gem 'delayed_job_active_record'
 gem 'daemons'
-#gem 'RedCloth'
 gem 'github-markdown'
 gem 'gollum'                           # wiki
+gem 'carrierwave'
 gem 'execjs'

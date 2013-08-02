@@ -4,6 +4,8 @@
 #       eg. config files from current users of cluster before web app
 #   - current assumed comment delimiters are ! #
 class ConfigImporter
+  attr_reader :success
+
   def dlog (str)
     Rails.logger.info str
   end
@@ -22,6 +24,7 @@ class ConfigImporter
     @params       = Hash.new
     @flag         = false             # has all checks been successful?
     @value_array  = Array.new
+    @success      = false
   end
 
   def filecheck                   # should run before all other tests
@@ -92,6 +95,7 @@ class ConfigImporter
       else
         Conf.create(name: @filename, config_template_id: @template.id, properties: @params)
       end
+      @success = true
     end
 
     dlog "<DEV INFO> ConfigImporter: import completed!"
