@@ -20,28 +20,3 @@ user = User.find_or_create_by_email :name => ENV['ADMIN_NAME'].dup,
 puts 'superuser: ' << user.user_id 
 user.add_role :admin
 user.save!
-
-user = User.find_or_create_by_email :name => 'Joe Smith',
-  :email => 'abc@gmail.com', :password => 'password',
-  :password_confirmation => 'password', :user_id => 'normal_user'
-puts 'normaluser: ' << user.user_id
-user.add_role :user
-user.save!
-
-user = User.find_or_create_by_email :name => 'Eugene',
-  :email => 'eugene@gmail.com', :password => 'password',
-  :password_confirmation => 'password', :user_id => 'ystarase'
-puts 'normaluser: ' << user.user_id
-user.add_role :user
-user.save!
-
-puts 'DEFAULT SERVERS'
-server = Server.find_or_create_by_name :name => 'steelers.uwaterloo.ca', :ip => '129.97.185.93'
-puts 'server: ' << server.name
-puts 'ip: ' << server.ip
-server.save!
-
-server = Server.find_or_create_by_name :name => 'linux028.student.cs.uwaterloo.ca', :ip => '129.97.167.52'
-puts 'server: ' << server.name
-puts 'ip: ' << server.ip
-server.save!
