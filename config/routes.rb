@@ -16,7 +16,6 @@ Steelers::Application.routes.draw do
   end
 
   resources :users do
-     resources :userfiles
      resources :jobs do
         member { post :run }
      end

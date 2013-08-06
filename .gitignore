@@ -26,9 +26,8 @@
 # Ignore tags
 tags
 
-# Ignore /u, /confs, /config_template, /wiki, /bin
+# Ignore /u, /confs, /config_template, /wiki
 /u
 /confs
 /config_templates
 /wiki
-/bin

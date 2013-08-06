@@ -1,0 +1,7 @@
+<%= simple_form_for [@user, @userfile], :html => {:multipart => true } do |f| %>
+  <%= f.error_notification %>
+  <%= f.hidden_field :user_id %>
+  <%= f.input :name %>
+  <%= f.file_field :upload %>
+  <%= f.button :submit %>
+<% end %>
