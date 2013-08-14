@@ -1,5 +1,4 @@
 Steelers::Application.routes.draw do
-  mount Precious::App, at: 'wiki'
 
   resources :confs
   resources :config_templates
@@ -7,6 +6,7 @@ Steelers::Application.routes.draw do
   #resource :admins
 
   authenticated :user do
+     mount Precious::App, at: 'wiki'
      root :to => 'home#index'
   end
   
@@ -16,12 +16,12 @@ Steelers::Application.routes.draw do
   end
 
   resources :users do
-     resources :userfiles
      resources :jobs do
         member { post :run }
      end
      
      resources :logs
+     resources :userfiles
   end
 
   # The priority is based upon order of creation:

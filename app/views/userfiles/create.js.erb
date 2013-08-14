@@ -1,0 +1,5 @@
+<% if @userfile.new_record? %>
+  alert("Failed to upload file: <%= j @userfile.errors.full_message.join(', ').html_safe %>");
+<% else %>
+  $("#userfiles").append("<%= j render(@userfile) %>");
+<% end %>

@@ -2,6 +2,7 @@
 
 FactoryGirl.define do
   factory :userfile do
-    upload "MyString"
+    user nil
+    name "MyString"
   end
 end

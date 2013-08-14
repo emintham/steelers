@@ -1,0 +1,13 @@
+<%= simple_form_for [@user, @userfile], :html => { :multiple => true } do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.hidden_field :user_id, :value => @user.id %>
+    <%= f.input :name %>
+    <%= f.file_field :upload %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

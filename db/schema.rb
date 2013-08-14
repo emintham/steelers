@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130725185150) do
+ActiveRecord::Schema.define(:version => 20130807212041) do
 
   create_table "admins", :force => true do |t|
     t.datetime "created_at", :null => false
@@ -112,12 +112,17 @@ ActiveRecord::Schema.define(:version => 20130725185150) do
   end
 
   create_table "userfiles", :force => true do |t|
-    t.string   "upload"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "name"
     t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.string   "upload_file_name"
+    t.string   "upload_content_type"
+    t.integer  "upload_file_size"
+    t.datetime "upload_updated_at"
   end
+
+  add_index "userfiles", ["user_id"], :name => "index_userfiles_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
