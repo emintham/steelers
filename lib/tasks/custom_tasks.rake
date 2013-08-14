@@ -136,10 +136,10 @@ namespace :custom_tasks do
   # //////////////////////////////////////////////////////////////////////
   # // Reset tasks
   # //////////////////////////////////////////////////////////////////////
-  desc "Clears directories after a database reset"
+  desc "Clears user directories and uploads after a database reset"
   task :reset do
     dirs = ['u', 'uploads']
-    puts "---------------- Task: Clearing directories --------------------"
+    puts "----------- Task: Clearing user directories and uploads --------"
 
     dirs.each do |d|
       puts " Clearing " + d
@@ -156,5 +156,14 @@ namespace :custom_tasks do
     clear_dir('config_templates')
     puts "---------------- Templates cleared -----------------------------"
     puts ""
+  end
+
+  desc "Clears user directories, uploads; recreates empty directories; and repopulate as necessary"
+  task :refresh => :environment do
+    commands = ['reset', 'global_dir', 'check_user_dir']
+    commands.each do |sub|
+      f = 'custom_tasks:' + sub
+      Rake::Task[f].execute
+    end
   end
 end

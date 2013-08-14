@@ -66,3 +66,4 @@ gem 'daemons'
 #gem 'RedCloth'
 gem 'github-markdown'
 gem 'gollum'                           # wiki
+gem 'paperclip'

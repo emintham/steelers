@@ -1,0 +1,44 @@
+<div class="accordion-group"> <!-- Uploads --->
+  <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
+      Uploads
+    </a>
+  </div> <!-- accordion-heading -->
+  <div id="collapseThree" class="accordion-body collapse">
+    <div class="accordion-inner">
+      <% if @user.userfiles.empty? %>
+        No uploads
+      <% else %>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>Notes</th>
+              <th>Filename</th>
+              <th>Uploaded at</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @user.userfiles.each do |f| %>
+              <tr>
+                <td><%= f.name %></td>
+                <th><%= f.upload.original_filename %></td>
+                <td><%= f.created_at.to_date %></td>
+                <td>
+                  <a data-toggle="modal" href="#import" class="btn btn-mini" 
+                    type="button">Import</a>
+                </td>
+                <td>
+                  <%= link_to 'Delete', user_userfile_path(@user,f), 
+                    :data => { :confirm => 'Are you sure?' }, 
+                    :method => :delete, :class => 'btn btn-mini' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div> <!-- accordion-inner -->
+  </div> <!-- accordion-body -->
+</div> <!-- accordion-group -->

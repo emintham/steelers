@@ -5,7 +5,7 @@
 
 # Global User Directory
 Rails.logger.info "<DEV INFO> Running Integrity Checks..."
-Rails.logger.info "<DEV INFO> 1. Checking /u/"
+Rails.logger.info "<DEV INFO> Checking /u/"
 global_dir = Rails.root.join('u').to_s
 global_permission = 0770
 if File.directory?(global_dir)
@@ -45,8 +45,18 @@ unless File.directory?(conf_dir)
   Rails.logger.info "<DEV INFO> empty /confs/ created!"
 end
 
+# Verify that storage has a directory
+Rails.logger.info "<DEV INFO> checkings storage directory..."
+storage_dir = Rails.root.join('storage').to_s
+user_permission = 0700
+unless File.directory?(storage_dir)
+  Rails.logger.info "<DEV INFO> creating /storage/ ..."
+  Dir.mkdir(storage_dir, user_permission)
+  Rails.logger.info "<DEV INFO> empty /storage/ created!"
+end
+
 # User directories (in /u/ and /confs/)
-Rails.logger.info "<DEV INFO> 2. Checking /u/<user_id>"
+Rails.logger.info "<DEV INFO> Checking /u/<user_id>"
 User.all.each do |user|
   user_dir = Rails.root.join('u', user.user_id).to_s
   user_permission = 0700
@@ -56,5 +66,32 @@ User.all.each do |user|
     Rails.logger.info "<DEV INFO> #{user.user_id} does not have directory!"
     Dir.mkdir(user_dir,user_permission) unless File.directory?(user_dir)
     Rails.logger.info "<DEV INFO> /u/#{user.user_id} created!"
+  end
+end
+
+Rails.logger.info "<DEV INFO> Checking /confs/<user_id>"
+User.all.each do |user|
+  user_dir = Rails.root.join('confs', user.user_id).to_s
+  user_permission = 0700
+  if File.directory?(user_dir)
+    Rails.logger.info "<DEV INFO> #{user.user_id} has directory!"
+  else
+    Rails.logger.info "<DEV INFO> #{user.user_id} does not have directory!"
+    Dir.mkdir(user_dir,user_permission) unless File.directory?(user_dir)
+    Rails.logger.info "<DEV INFO> /confs/#{user.user_id} created!"
+  end
+end
+
+# User storage (in /storage/)
+Rails.logger.info "<DEV INFO> Checking /storage/<id>"
+User.all.each do |user|
+  user_dir = Rails.root.join('storage', user.id).to_s
+  user_permission = 0700
+  if File.directory?(user_dir)
+    Rails.logger.info "<DEV INFO> #{user.id} has directory!"
+  else
+    Rails.logger.info "<DEV INFO> #{user.id} does not have directory!"
+    Dir.mkdir(user_dir,user_permission) unless File.directory?(user_dir)
+    Rails.logger.info "<DEV INFO> /confs/#{user.id} created!"
   end
 end

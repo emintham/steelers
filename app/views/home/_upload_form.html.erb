@@ -1,4 +1,4 @@
-<%= simple_form_for [@user, @userfile], :html => { :multiple => true } do |f| %>
+<%= simple_form_for [@user, Userfile.new], :html => { :multiple => true } do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
@@ -6,8 +6,5 @@
     <%= f.input :name %>
     <%= f.file_field :upload %>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+  <%= f.button :submit %>
 <% end %>

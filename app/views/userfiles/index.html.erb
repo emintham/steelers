@@ -1,0 +1,23 @@
+<h1>Listing userfiles</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @user.userfiles.each do |userfile| %>
+  <tr>
+    <td><%= userfile.name %></td>
+    <td><%= link_to 'Show', user_userfile_path(@user,userfile) %></td>
+    <td><%= link_to 'Edit', edit_user_userfile_path(@user,userfile) %></td>
+    <td><%= link_to 'Destroy', user_userfile_path(@user,userfile), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Userfile', new_user_userfile_path %>

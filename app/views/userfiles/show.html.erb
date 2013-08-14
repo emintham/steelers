@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @userfile.user %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @userfile.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_userfile_path(@user,@userfile) %> |
+<%= link_to 'Back', user_userfiles_path %>
