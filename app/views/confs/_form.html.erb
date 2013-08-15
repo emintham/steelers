@@ -1,4 +1,4 @@
-<%= simple_form_for @conf do |f| %>
+<%= simple_form_for @conf, :url => user_conf_path(@conf.user_id,@conf) do |f| %>
   <%= f.error_notification %>
 
   <%= f.hidden_field :config_template_id %>

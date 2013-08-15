@@ -1,28 +1,20 @@
 <% content_for :title do %>Administrator's Dashboard<% end %>
+<% content_for :description do %>Administrative Actions<% end %>
 
-<div class="accordion" id="accordion2">
-  <div class="accordion-group"> <!-- Users -->
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-        Users
-      </a>
-    </div> <!-- accordion toggle -->
-    <div id="collapseOne" class="accordion-body collapse in">
-      <div class="accordion-inner">
-        <% render users %>
-      </div> <!-- accordion inner -->
-    </div> <!-- collapseOne -->
-  </div> <!-- accordion group -->
-  <div class="accordion-group"> <!-- Servers -->
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-        Servers
-      </a>
-    </div> <!-- accordion toggle -->
-    <div id="collapseTwo" class="accordion-body collapse">
-      <div class="accordion-inner">
-        <% render servers %>
-      </div> <!-- accordion inner -->
-    </div> <!-- collapseTwo -->
-  </div> <!-- accordion group -->
-</div> <!-- accordion -->
+<div class='page-header'>
+  <h1>Administrative Dashboard</h1>
+  <h3>
+    Welcome <%= @user.user_id %>, <small>it is now <%= Time.now.asctime %></small>
+  </h3>
+  <%= link_to 'New Template', new_config_template_path,
+    :class => 'btn btn-mini' %> | 
+  <%= link_to 'New Server', new_server_path, :class => 'btn btn-mini' %>
+</div>
+
+<div class="span10">
+  <div class="accordion" id="accordion1">
+    <%= render 'users' %>
+    <%= render 'servers' %>
+    <%= render 'templates' %>
+  </div> <!-- accordion -->
+</div>

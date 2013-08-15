@@ -82,6 +82,8 @@ class UserfilesController < ApplicationController
     end
   end
 
+  # POST
+  # import uploaded text files into configuration files in database
   def import
     @user = User.find(params[:user_id])
     @userfile = @user.userfiles.find(params[:id])

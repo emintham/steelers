@@ -1,0 +1,10 @@
+<%= simple_form_for @server do |f| %>
+  <%= f.error_notification %>
+  
+  <div class="form-inputs">
+    <%= f.input :name, :autofocus => true, :required => true %>
+    <%= f.input :ip, :required => true %>
+  </div>
+
+  <%= f.button :submit %>
+<% end %>

@@ -2,7 +2,8 @@ class ConfsController < ApplicationController
   # GET /confs
   # GET /confs.json
   def index
-    @confs = Conf.all
+    @user = User.find(params[:user_id])
+    @confs = @user.confs.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +14,8 @@ class ConfsController < ApplicationController
   # GET /confs/1
   # GET /confs/1.json
   def show
-    @conf = Conf.find(params[:id])
+    @user = User.find(params[:user_id])
+    @conf = @user.confs.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,31 +26,31 @@ class ConfsController < ApplicationController
   # GET /confs/new
   # GET /confs/new.json
   def new
-    @conf = Conf.new(config_template_id: params[:config_template_id])
+    @user = User.find(params[:user_id])
+    @conf = @user.confs.new(config_template_id: params[:config_template_id])
 
     respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @conf }
+      redirect_to root_url
     end
   end
 
   # GET /confs/1/edit
   def edit
-    @conf = Conf.find(params[:id])
+    @user = User.find(params[:user_id])
+    @conf = @user.confs.find(params[:id])
   end
 
   # POST /confs
   # POST /confs.json
   def create
-    @conf = Conf.new(params[:conf])
+    @user = User.find(params[:user_id])
+    @conf = @user.confs.new(params[:conf])
 
     respond_to do |format|
       if @conf.save
-        format.html { redirect_to @conf, notice: 'Conf was successfully created.' }
-        format.json { render json: @conf, status: :created, location: @conf }
+        format.html { redirect_to root_url, notice: 'Conf was successfully created.' }
       else
         format.html { render action: "new" }
-        format.json { render json: @conf.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -56,15 +58,14 @@ class ConfsController < ApplicationController
   # PUT /confs/1
   # PUT /confs/1.json
   def update
-    @conf = Conf.find(params[:id])
+    @user = User.find(params[:user_id])
+    @conf = @user.confs.find(params[:id])
 
     respond_to do |format|
       if @conf.update_attributes(params[:conf])
-        format.html { redirect_to @conf, notice: 'Conf was successfully updated.' }
-        format.json { head :no_content }
+        format.html { redirect_to root_url, notice: 'Conf was successfully updated.' }
       else
         format.html { render action: "edit" }
-        format.json { render json: @conf.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -72,9 +73,10 @@ class ConfsController < ApplicationController
   # DELETE /confs/1
   # DELETE /confs/1.json
   def destroy
-    @conf = Conf.find(params[:id])
-    filename = @conf.name.gsub(/ /, '_')
-    filepath = Rails.root.join('conf', filename).to_s
+    @user = User.find(params[:user_id])
+    @conf = @user.confs.find(params[:id])
+    filename = @conf.name.gsub(/ /, '_') + @conf.id.to_s
+    filepath = Rails.root.join('conf', @user.id.to_s, filename).to_s
     if File.exists?(filepath)
       File.delete(filepath)
       Rails.logger.info "<DEV INFO> deleted conf: #{filename}"
@@ -82,8 +84,7 @@ class ConfsController < ApplicationController
     @conf.destroy
 
     respond_to do |format|
-      format.html { redirect_to confs_url }
-      format.json { head :no_content }
+      format.html { redirect_to root_url }
     end
   end
 end

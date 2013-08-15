@@ -9,7 +9,7 @@
       </li>
       <% if current_user.has_role? :admin %>
          <li>
-         <%= link_to('Admin Dashboard', users_path) %>
+         <%= link_to('Admin Dashboard', 'admins#index') %>
          </li>
       <% end %>
    <% else %>

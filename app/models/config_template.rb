@@ -9,6 +9,10 @@ class ConfigTemplate < ActiveRecord::Base
   accepts_nested_attributes_for :fields, allow_destroy: true
   accepts_nested_attributes_for :userfiles
 
+  # --------------- Validations ---------------------------------------
+  validates_presence_of :name, :on => :create
+  validates_presence_of :program_id, :on => :create
+
   # --------------- Custom Methods ------------------------------------
   after_create :write_to_file
   

@@ -2,20 +2,22 @@
 <% content_for :description do %>User home page<% end %>
 
 <div class='page-header'>
-  <h3>Logged in as: 
-    <small><%= link_to @user.user_id, user_path(@user) %></small>
+  <h3>Logged in as: <%= link_to @user.user_id, user_path(@user) %>
   </h3>
-<p>Current time: <%= Time.now %></p>
+<p>Current time: <%= Time.now.asctime %></p>
 </div>
 
-<div class="span12">
+<div class="span10">
   <div class="accordion" id="accordion1">
     <%= render 'job_queue' %>
+    <%= render 'configs' %>
     <%= render 'log_queue' %>
     <%= render 'upload_index' %>
   </div> <!-- accordion -->
 </div>
 
-<div class='span12'>
-  <%= render 'upload_form' %>
+<div class="span10">
+  <hr>
 </div>
+
+<%= render 'new_upload' %>

@@ -1,0 +1,47 @@
+<div class="accordion-group"> <!-- Configs -->
+  <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#collapseFour">
+      Configurations
+    </a>
+  </div> <!-- accordion heading -->
+  <div id="collapseFour" class="accordion-body collapse">
+    <div class="accordion-inner">
+      <% if @user.confs.empty? %>
+        No configurations available. Either create a new one or import from
+        previous configuration files. See wiki for more information.
+      <% else %>
+        <!-- Config table -->
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Program</th>
+              <th>Created at</th>
+              <th>Template</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @user.confs.each do |conf| %>
+              <tr>
+                <td><%= conf.name %></td>
+                <td><%= conf.config_template.program.name %></td>
+                <td><%= conf.created_at.to_date %></td>
+                <td><%= conf.config_template.name %></td>
+                <td><%= link_to 'View', user_conf_path(@user,conf),
+                  class: 'btn btn-mini' %></td>
+                <td><%= link_to 'Edit', edit_user_conf_path(@user,conf),
+                  class: 'btn btn-mini' %></td>
+                <td><%= link_to 'Delete', user_conf_path(@user,conf), 
+                  method: :delete, data: { confirm: 'Are you sure?' },
+                  class: 'btn btn-mini' %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div> <!-- accordion-inner -->
+  </div> <!-- accordion-body -->
+</div> <!-- accordion-group -->

@@ -13,5 +13,5 @@
 <% end %>
 
 <%= render 'view_file' %>
-<%= link_to 'Edit', edit_conf_path(@conf), :class => 'btn btn-mini' %>
-<%= link_to 'Back', confs_path, :class => 'btn btn-mini' %>
+<%= link_to 'Edit', edit_user_conf_path(@conf.user_id,@conf), :class => 'btn btn-mini' %>
+<%= link_to 'Back', root_url, :class => 'btn btn-mini' %>
