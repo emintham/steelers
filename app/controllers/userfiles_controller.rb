@@ -1,15 +1,15 @@
 class UserfilesController < ApplicationController
-  # GET /userfiles
-  # GET /userfiles.json
-  def index
-    @user = User.find(params[:user_id])
-    @userfiles = @user.userfiles.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @userfiles }
-    end
-  end
+#  # GET /userfiles
+#  # GET /userfiles.json
+#  def index
+#    @user = User.find(params[:user_id])
+#    @userfiles = @user.userfiles.all
+#
+#    respond_to do |format|
+#      format.html # index.html.erb
+#      format.json { render json: @userfiles }
+#    end
+#  end
 
   # GET /userfiles/1
   # GET /userfiles/1.json
@@ -28,10 +28,6 @@ class UserfilesController < ApplicationController
   def new
     @user = User.find(params[:user_id])
     @userfile = @user.userfiles.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-    end
   end
 
   # GET /userfiles/1/edit
@@ -46,14 +42,16 @@ class UserfilesController < ApplicationController
     @user = User.find(params[:user_id])
     @userfile = @user.userfiles.create(params[:userfile])
 
-    respond_to do |format|
-      if @userfile.valid_format? && @userfile.save
-        flash[:notice] = "File uploaded successfully!"
-        redirect_to 'home#index'
-      else
-        flash[:notice] = 'Problem with uploading file'
-      end
+    if !@userfile.valid_format?
+      File.delete(@userfile.upload.path) if File.exists?(@userfile.upload.path)
+      @userfile.destroy
+      flash[:error] = 'Invalid format!'
+    elsif @userfile.save
+      flash[:notice] = "File uploaded successfully!"
+    else
+      flash[:error] = 'Problem with uploading file. Please make sure the selected file exists.'
     end
+    redirect_to root_url
   end
 
   # PUT /userfiles/1
@@ -76,10 +74,22 @@ class UserfilesController < ApplicationController
   def destroy
     @user = User.find(params[:user_id])
     @userfile = @user.userfiles.find(params[:id])
+    File.delete(@userfile.upload.path) if File.exists?(@userfile.upload.path)
     @userfile.destroy
 
     respond_to do |format|
       format.html { redirect_to root_url, notice: 'File deleted.' }
     end
+  end
+
+  def import
+    @user = User.find(params[:user_id])
+    @userfile = @user.userfiles.find(params[:id])
+    if @userfile.import(@userfile.type_id)
+      flash[:notice] = "Import completed successfully!"
+    else
+      flash[:error] = "Problems with importing configuration file. Please see wiki for more information about uploading."
+    end
+    redirect_to root_url
   end
 end

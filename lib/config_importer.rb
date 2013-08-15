@@ -3,13 +3,17 @@
 #   - config to be imported is properly formatted
 #       eg. config files from current users of cluster before web app
 #   - current assumed comment delimiters are ! #
+#   - uploaded files reside in uploads/:user_id/
 class ConfigImporter
-  attr_reader :success
+  attr_reader :success    # to indicate to outside functions whether
+                          # import was successful
 
   def dlog (str)
     Rails.logger.info str
   end
 
+  # Inputs: user's id, template's id, absolute path of input file
+  # for absolute path of input file, use userfile.upload.path
   def initialize(user, template, input_file)
     dlog "<DEV INFO> ConfigImporter: initializing config importer..."
     dlog "<DEV INFO> ConfigImporter: user = #{user.name}" if user
@@ -18,7 +22,7 @@ class ConfigImporter
 
     @user         = user if user
     @filename     = File.basename(input_file) if input_file
-    @filepath     = Rails.root.join('u', @user.user_id, @filename).to_s if @user && @filename
+    @filepath     = Rails.root.join('uploads', @user.id.to_s, @filename).to_s if @user && @filename
     @template     = template if template
     @fields       = @template.fields.reject {|x| x.separator? } if @template # Array
     @params       = Hash.new
@@ -95,7 +99,7 @@ class ConfigImporter
       else
         Conf.create(name: @filename, config_template_id: @template.id, properties: @params)
       end
-      @success = true
+      @success = true unless @flag = false
     end
 
     dlog "<DEV INFO> ConfigImporter: import completed!"

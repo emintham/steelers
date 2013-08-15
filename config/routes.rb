@@ -19,9 +19,10 @@ Steelers::Application.routes.draw do
      resources :jobs do
         member { post :run }
      end
-     
+     resources :userfiles do
+        member { post :import }
+     end
      resources :logs
-     resources :userfiles
   end
 
   # The priority is based upon order of creation:

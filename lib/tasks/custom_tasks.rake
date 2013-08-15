@@ -95,11 +95,8 @@ namespace :custom_tasks do
 
   desc "Retrieves programs in /bin and enters them into database"
   task :retrieve_program => :environment do
-    permission = 0100
-
     puts "---------------- Task: Retrieving programs from /bin -----------"
     bin_dir = Rails.root.join('bin').to_s
-    File.chmod(permission, bin_dir)
 
     puts " Saving current directory and chdir into /bin ..."
     root_dir = Dir.pwd
@@ -158,8 +155,10 @@ namespace :custom_tasks do
     puts ""
   end
 
-  desc "Clears user directories, uploads; recreates empty directories; and repopulate as necessary"
+  desc "Clears database, reseeds; clears user directories, uploads; recreates empty directories; and repopulate as necessary"
   task :refresh => :environment do
+    Rake::Task['db:reset'].execute
+    Rake::Task['db:seed'].execute
     commands = ['reset', 'global_dir', 'check_user_dir']
     commands.each do |sub|
       f = 'custom_tasks:' + sub
