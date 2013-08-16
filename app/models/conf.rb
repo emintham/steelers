@@ -9,6 +9,7 @@ class Conf < ActiveRecord::Base
 
   # ---------------------- Validations --------------------------------
   validate :validate_properties
+  validates_presence_of :user_id, :on => :create
 
   # ---------------------- Custom Methods -----------------------------
   after_create :write_to_file
@@ -24,7 +25,8 @@ class Conf < ActiveRecord::Base
   protected
   def write_to_file
     # Filename should not contain spaces
-    filepath = Rails.root.join('confs', name.gsub(/ /, '_')).to_s
+    filename = name.gsub(/ /, '_') + id.to_s
+    filepath = Rails.root.join('confs', user_id, filename).to_s
 
     unless File.exists?(filepath)
       f = File.new(filepath, "w")

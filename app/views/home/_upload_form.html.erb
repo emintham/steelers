@@ -2,9 +2,12 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.hidden_field :user_id, :value => @user.id %>
-    <%= f.input :name %>
     <%= f.file_field :upload %>
+    <%= f.hidden_field :user_id, :value => @user.id %>
+    <%= f.input :name, :label => 'Notes' %>
+    <%= f.association :type, collection: ConfigTemplate.all,
+      label_method: :name, value_method: :id, include_blank: true,
+      label: 'Template', :required => true %>
   </div>
-  <%= f.button :submit %>
+  <%= f.button :submit, "Upload" %>
 <% end %>

@@ -2,5 +2,5 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @conf %> |
-<%= link_to 'Back', confs_path %>
+<%= link_to 'View', user_conf_path(@conf.user_id, @conf) %> |
+<%= link_to 'Back', user_confs_path(@conf.user_id) %>

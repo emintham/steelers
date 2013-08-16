@@ -4,13 +4,21 @@ class ConfigTemplate < ActiveRecord::Base
   # -------------- Associations ---------------------------------------
   has_many :fields, class_name: "ConfigParam"
   belongs_to :program
+  has_many :userfiles, dependent: :restrict
 
   accepts_nested_attributes_for :fields, allow_destroy: true
+  accepts_nested_attributes_for :userfiles
+
+  # --------------- Validations ---------------------------------------
+  validates_presence_of :name, :on => :create
+  validates_presence_of :program_id, :on => :create
 
   # --------------- Custom Methods ------------------------------------
   after_create :write_to_file
   
   protected
+  # Writes abstract specification of configuration template to a plaintext
+  # file for debugging and checking
   def write_to_file
     # Filename should not contain spaces
     filepath = Rails.root.join('config_templates', name.gsub(/ /, '_')).to_s

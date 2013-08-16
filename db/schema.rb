@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130807212041) do
+ActiveRecord::Schema.define(:version => 20130815160051) do
 
   create_table "admins", :force => true do |t|
     t.datetime "created_at", :null => false
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(:version => 20130807212041) do
     t.string   "upload_content_type"
     t.integer  "upload_file_size"
     t.datetime "upload_updated_at"
+    t.integer  "type_id"
   end
 
   add_index "userfiles", ["user_id"], :name => "index_userfiles_on_user_id"

@@ -7,7 +7,7 @@
   <div id="collapseThree" class="accordion-body collapse">
     <div class="accordion-inner">
       <% if @user.userfiles.empty? %>
-        No uploads
+        No uploads yet. You may upload a file at the bottom of the page.
       <% else %>
         <table class="table table-condensed">
           <thead>
@@ -26,8 +26,9 @@
                 <th><%= f.upload.original_filename %></td>
                 <td><%= f.created_at.to_date %></td>
                 <td>
-                  <a data-toggle="modal" href="#import" class="btn btn-mini" 
-                    type="button">Import</a>
+                  <%= link_to 'Import', import_user_userfile_path(@user, f),
+                    :method => :post, :id => f.id, :user_id => @user.id,
+                    :class => 'btn btn-mini' %>
                 </td>
                 <td>
                   <%= link_to 'Delete', user_userfile_path(@user,f), 

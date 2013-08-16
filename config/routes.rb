@@ -1,13 +1,12 @@
 Steelers::Application.routes.draw do
 
-  resources :confs
-  resources :config_templates
-
-  #resource :admins
 
   authenticated :user do
      mount Precious::App, at: 'wiki'
      root :to => 'home#index'
+     resources :config_templates
+     resources :admins
+     resources :servers
   end
   
   devise_for :users
@@ -19,9 +18,11 @@ Steelers::Application.routes.draw do
      resources :jobs do
         member { post :run }
      end
-     
+     resources :userfiles do
+        member { post :import }
+     end
      resources :logs
-     resources :userfiles
+     resources :confs
   end
 
   # The priority is based upon order of creation:
