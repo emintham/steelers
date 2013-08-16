@@ -1,5 +1,8 @@
 class ProgramsController < ApplicationController
+  before_filter :authenticate_user!
+
   def show
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @program = Program.find(params[:id])
 
     respond_to do |format|
@@ -9,6 +12,7 @@ class ProgramsController < ApplicationController
   end
 
   def index
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @programs = Program.all
 
     respond_to do |format|
@@ -18,6 +22,7 @@ class ProgramsController < ApplicationController
   end
 
   def create
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @program = Program.new(params[:name])
     if @program.save
        redirect_to @program, :notice => "Added program!"
@@ -27,6 +32,7 @@ class ProgramsController < ApplicationController
   end
 
   def destroy
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @program = Program.find(params[:id])
     @program.destroy
 
@@ -37,6 +43,7 @@ class ProgramsController < ApplicationController
   end
 
   def new
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @program = Program.new
   end
 
