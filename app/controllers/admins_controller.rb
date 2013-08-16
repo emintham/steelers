@@ -6,5 +6,6 @@ class AdminsController < ApplicationController
     @user = current_user
     @servers = Server.all
     @config_templates = ConfigTemplate.all
+    @programs = Program.all
   end
 end
