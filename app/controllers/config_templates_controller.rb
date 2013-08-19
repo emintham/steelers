@@ -1,7 +1,10 @@
 class ConfigTemplatesController < ApplicationController
+  before_filter :authenticate_user!
+
   # GET /config_templates
   # GET /config_templates.json
   def index
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @config_templates = ConfigTemplate.all
 
     respond_to do |format|
@@ -13,6 +16,7 @@ class ConfigTemplatesController < ApplicationController
   # GET /config_templates/1
   # GET /config_templates/1.json
   def show
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @config_template = ConfigTemplate.find(params[:id])
 
     respond_to do |format|
@@ -24,6 +28,7 @@ class ConfigTemplatesController < ApplicationController
   # GET /config_templates/new
   # GET /config_templates/new.json
   def new
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @config_template = ConfigTemplate.new
 
     respond_to do |format|
@@ -34,12 +39,14 @@ class ConfigTemplatesController < ApplicationController
 
   # GET /config_templates/1/edit
   def edit
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @config_template = ConfigTemplate.find(params[:id])
   end
 
   # POST /config_templates
   # POST /config_templates.json
   def create
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @config_template = ConfigTemplate.new(params[:config_template])
 
     respond_to do |format|
@@ -56,6 +63,7 @@ class ConfigTemplatesController < ApplicationController
   # PUT /config_templates/1
   # PUT /config_templates/1.json
   def update
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @config_template = ConfigTemplate.find(params[:id])
 
     respond_to do |format|
@@ -72,6 +80,7 @@ class ConfigTemplatesController < ApplicationController
   # DELETE /config_templates/1
   # DELETE /config_templates/1.json
   def destroy
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @config_template = ConfigTemplate.find(params[:id])
     filename = @config_template.name.gsub(/ /, '_')
     filepath = Rails.root.join('config_templates', filename).to_s

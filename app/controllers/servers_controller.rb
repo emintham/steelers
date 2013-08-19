@@ -1,9 +1,13 @@
 class ServersController < ApplicationController
+  before_filter :authenticate_user!
+
   def new
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @server = Server.new  
   end
 
   def create
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @server = Server.create(params[:server])
     if @server.save
       flash[:notice] = "Server successfully added!"
@@ -14,6 +18,7 @@ class ServersController < ApplicationController
   end
 
   def destroy
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
     @server = Server.find(params[:id])
     @server.destroy
     flash[:notice] = "Server deleted!"

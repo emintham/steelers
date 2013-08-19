@@ -7,6 +7,7 @@ Steelers::Application.routes.draw do
      resources :config_templates
      resources :admins
      resources :servers
+     resources :programs
   end
   
   devise_for :users
