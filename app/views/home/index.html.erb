@@ -2,9 +2,12 @@
 <% content_for :description do %>User home page<% end %>
 
 <div class='page-header'>
-  <h3>Logged in as: <%= link_to @user.user_id, user_path(@user) %>
+  <h3>
+    Logged in as: <%= link_to @user.user_id, user_path(@user) %>
   </h3>
-<p>Current time: <%= Time.now.asctime %></p>
+  <p>Current time: <%= Time.now.asctime %></p>
+  <%= link_to 'New Job', new_user_job_path(@user), 
+    :class => 'btn btn-mini' %>
 </div>
 
 <div class="span10">
