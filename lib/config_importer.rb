@@ -99,7 +99,7 @@ class ConfigImporter
       else
         Conf.create(name: @filename, config_template_id: @template.id, properties: @params)
       end
-      @success = true unless @flag = false
+      @success = true unless @flag == false
     end
 
     dlog "<DEV INFO> ConfigImporter: import completed!"
