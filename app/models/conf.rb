@@ -1,4 +1,8 @@
+require 'error_helper'
+
 class Conf < ActiveRecord::Base
+  include Dev
+
   attr_accessible :name, :config_template_id, :properties, :user_id
 
   # ---------------------- Associations -------------------------------
@@ -22,14 +26,16 @@ class Conf < ActiveRecord::Base
     end
   end
 
-  protected
+  # Writes config to file
   def write_to_file
     # Filename should not contain spaces
-    filename = name.gsub(/ /, '_') + id.to_s
-    filepath = Rails.root.join('confs', user_id, filename).to_s
+    filepath = Rails.root.join('confs', user_id.to_s, name).to_s
+    log "Conf Model: filepath = #{filepath}"
 
     unless File.exists?(filepath)
       f = File.new(filepath, "w")
+      log "Conf Model: creating file..."
+
       config_template.fields.each do |field|
         if (field.param_type == 'text' || field.param_type == 'number')
           f.write(properties[field.name])
@@ -42,6 +48,7 @@ class Conf < ActiveRecord::Base
         end
       end
       f.close
+      log "Conf Model: done writing file, closing..."
     end
   end
 end

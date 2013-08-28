@@ -1,0 +1,6 @@
+<h3>Please select job type:</h3>
+<%= form_tag "/home/job_redirect", method: "post" do %>
+  <% opt_array = [["LSDYNA", "LS"], ["Others", "OTH"]] %> 
+  <%= select_tag "type", options_for_select(opt_array) %>
+  <%= submit_tag "Submit" %>
+<% end %>

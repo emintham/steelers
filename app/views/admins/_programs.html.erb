@@ -11,6 +11,10 @@
           <tr>
             <th>Name</th>
             <th>Created at</th>
+            <th>Folder-specific?</th>
+            <th>Type</th>
+            <th></th>
+            <th></th>
             <th></th>
           </tr>
         </thead>
@@ -19,6 +23,14 @@
             <tr>
               <td><%= program.name %></td>
               <td><%= program.created_at.to_date %></td>
+              <td><%= program.folder_specific ? "True" : "False" %></td>
+              <td><%= program.folder_specific ? program.dyna_type.upcase : "-" %></td>
+              <td><%= link_to 'Toggle', toggle_program_path(program),
+                method: :post, id: program.id, 
+                class: 'btn btn-mini' %></td>
+              <td><%= link_to 'Change Type', change_type_program_path(program),
+                method: :post, id: program.id,
+                class: 'btn btn-mini' %></td>
               <td><%= link_to 'Delete', program, 
                 method: :delete, data: { confirm: 'Are you sure?' },
                 class: 'btn btn-mini' %></td>

@@ -1,0 +1,21 @@
+<h2>Create Job</h2> <!-- NEW LS DYNA -->
+<%= simple_form_for [@user, @job] do |f| %>
+  <%= f.error_notification %>
+  <%= f.hidden_field :folder_specific, :value => true %>
+  <%= f.input :server_id, :collection => Server.all, 
+              :label_method => :name,
+              :value_method => :id %>
+  <% lsdynas = Program.all.find_all { |p| p.folder_specific } %>
+  <%= f.input :program, :collection => lsdynas %>
+  <% zipfiles = @user.userfiles.find_all { |z| z.upload_content_type == "application/zip" } %>
+  <%= f.input :input, :collection => zipfiles, 
+    :label => "Input zip", :label_method => :upload_file_name,
+    :value_method => :id %>
+  <%= f.input :num_procs, :collection => 1..240,
+    :label => "#Processors" %>
+  <%= f.input :description, as: :text, 
+    :input_html => {style: 'height:40px;' }%>
+  <%= f.input_field :status, :as => :boolean, 
+    :inline_label => 'Start now?' %>
+  <%= f.button :submit %>
+<% end %>

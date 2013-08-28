@@ -6,7 +6,9 @@
     Logged in as: <%= link_to @user.user_id, user_path(@user) %>
   </h3>
   <p>Current time: <%= Time.now.asctime %></p>
-  <%= link_to 'New Job', new_user_job_path(@user), 
+  <%= link_to 'New Job', home_job_landing_path(),
+    :class => 'btn btn-mini' %> | 
+  <%= link_to 'New Upload', home_new_upload_path(),
     :class => 'btn btn-mini' %>
 </div>
 
@@ -22,5 +24,3 @@
 <div class="span10">
   <hr>
 </div>
-
-<%= render 'new_upload' %>

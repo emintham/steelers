@@ -1,6 +1,13 @@
+require 'error_helper'
+require 'job_helper'
+
 class Job < ActiveRecord::Base
+  include Dev           # for logging
+
   attr_accessible :description, :input, :user_id, :server_id, :status,
      :program_id
+
+  attr_accessor :num_procs
 
   # --------------- Associations ---------------------------------------
   belongs_to :user,
@@ -16,50 +23,31 @@ class Job < ActiveRecord::Base
   has_many :logs
 
   # ----------------- Validations --------------------------------------
-  #validates :input,
-  #   :presence => { :on => :create }
-
   validates_associated :user, :server, :program
 
+  # Calls the job helper to execute job based on job's type (is it ls-dyna?
+  #  is it mpi? etc.) and parameters
   def run
-    if completed
-      redirect_to root_url, :alert => 'Job has already been completed.'
-    else
-      prog_name = Program.find(program_id).name
+     user = User.find(:user_id).user_id
+     if completed
+        redirect_to root_url, :alert => 'Job has already been completed!'
+        log "Job Model: #{user} attempted to execute completed job."
+     else
+        # initialize JobHelper based on current instance
+        j = JobHelper.new(self)     
+        log "Job Model: #{user} executing job #{id}"
 
-      # output has the format <program_name>_<input>_<job_id>.out
-      output = prog_name + '_' + File.basename(input) + 
-         '_' + id.to_s + '.out'
-
-      exec_path = Rails.root.join('bin', prog_name).to_s
-      userid = User.find(user_id).user_id
-      input_path = Rails.root.join('u', userid, input).to_s
-      output_path = Rails.root.join('u', userid, output).to_s
-
-      Rails.logger.info "<DEV INFO> input_path: #{input_path}"
-      Rails.logger.info "<DEV INFO> output_path: #{output_path}"
-
-      if input == ''
-         # %x[#{exec_path} > #{output_path}]
-         Net::SSH.start(server.name, ENV['APP_UID'], :password => ENV['APP_PASSWORD']) do |ssh|
-            result = ssh.exec!("ls -l")
-            Rails.logger.info "<DEV INFO> ssh output:"
-            Rails.logger.info result
-         end
-      else
-         %x[#{exec_path} < #{input_path} > #{output_path}]
-         Rails.logger.info "<DEV INFO> command is: #{exec_path} < #{input_path} > #{output_path}"
-         Net::SSH.start(server.name, ENV['APP_UID'], :password => ENV['APP_PASSWORD']) do |ssh|
-            result = ssh.exec!("ls -l")
-            Rails.logger.info "<DEV INFO> ssh output:"
-            Rails.logger.info result
-         end
-      end
-      update_attribute(:status, false)
-      update_attribute(:completed, true)
-      update_attribute(:output, output)
-
-      Rails.logger.info "<DEV INFO> run complete, attrs updated"
-    end
+        # Attempt to execute job- check return codes
+        if j.execute
+           update_attribute(:status, false)
+           update_attribute(:completed, true)
+           update_attribute(:output, output)
+           log "Job Model: Job #{id} by User #{user} completed!"
+           redirect_to root_url, :notice => 'Job submitted!'
+        else
+           log "Job Model ERROR: unable to complete job!"
+           redirect_to root_url, :alert => 'Error in submitting job! Please contact administrator.'
+        end
+     end
   end
 end

@@ -13,7 +13,7 @@
   </div> <!-- modal-header -->
   <div class="modal-body">
 <pre>
-<% filepath = Rails.root.join('confs', @conf.name.gsub(/ /, '_')).to_s %>
+<% filepath = Rails.root.join('confs', conf.user.id.to_s, conf.name.gsub(/ /, '_')).to_s %>
 <%= render :file => filepath %>
 </pre>
   </div> <!-- modal-body -->

@@ -67,3 +67,4 @@ gem 'daemons'
 gem 'github-markdown'
 gem 'gollum'                           # wiki
 gem 'paperclip'
+gem 'zipruby'

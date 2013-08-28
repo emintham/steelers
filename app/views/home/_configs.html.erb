@@ -30,8 +30,7 @@
                 <td><%= conf.config_template.program.name %></td>
                 <td><%= conf.created_at.to_date %></td>
                 <td><%= conf.config_template.name %></td>
-                <td><%= link_to 'View', user_conf_path(@user,conf),
-                  class: 'btn btn-mini' %></td>
+                <td><%= render 'confs/view_file', :conf => conf %></td>
                 <td><%= link_to 'Edit', edit_user_conf_path(@user,conf),
                   class: 'btn btn-mini' %></td>
                 <td><%= link_to 'Delete', user_conf_path(@user,conf), 

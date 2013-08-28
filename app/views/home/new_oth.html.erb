@@ -1,13 +1,13 @@
-<h2>Create Job</h2>
+<h2>Create Job</h2> <!-- NON LS DYNA JOBS -->
 <%= simple_form_for [@user, @job] do |f| %>
   <%= f.error_notification %>
+  <%= f.hidden_field :folder_specific, :value => false %>
   <%= f.input :server_id, :collection => Server.all, 
               :label_method => :name,
               :value_method => :id %>
-  <%= f.association :program %>
-  <% user_dir = Rails.root.join('confs', @user.id).to_s %>
-  <% pattern = File.join(user_dir, '*') %>
-  <% inputs = Dir.glob(pattern).map { |f| File.basename(f) } %>
+  <% programs = Program.all.find_all { |p| !p.folder_specific } %>
+  <%= f.input :program, :collection => programs %>
+  <% inputs = @user.confs.map { |f| f.name } %>
   <%= f.input :input, :collection => inputs %>
   <%= f.input :description, as: :text, 
     :input_html => {style: 'height:40px;' }%>
