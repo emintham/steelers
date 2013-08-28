@@ -4,11 +4,6 @@ class ConfsController < ApplicationController
   def index
     @user = User.find(params[:user_id])
     @confs = @user.confs.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @confs }
-    end
   end
 
   # GET /confs/1
@@ -16,11 +11,6 @@ class ConfsController < ApplicationController
   def show
     @user = User.find(params[:user_id])
     @conf = @user.confs.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @conf }
-    end
   end
 
   # GET /confs/new
@@ -63,6 +53,7 @@ class ConfsController < ApplicationController
 
     respond_to do |format|
       if @conf.update_attributes(params[:conf])
+        @conf.write_to_file     # write changes to file
         format.html { redirect_to root_url, notice: 'Conf was successfully updated.' }
       else
         format.html { render action: "edit" }
@@ -76,7 +67,7 @@ class ConfsController < ApplicationController
     @user = User.find(params[:user_id])
     @conf = @user.confs.find(params[:id])
     filename = @conf.name.gsub(/ /, '_') + @conf.id.to_s
-    filepath = Rails.root.join('conf', @user.id.to_s, filename).to_s
+    filepath = Rails.root.join('confs', @user.id.to_s, filename).to_s
     if File.exists?(filepath)
       File.delete(filepath)
       Rails.logger.info "<DEV INFO> deleted conf: #{filename}"

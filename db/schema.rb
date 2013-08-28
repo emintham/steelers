@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130815160051) do
+ActiveRecord::Schema.define(:version => 20130828175809) do
 
   create_table "admins", :force => true do |t|
     t.datetime "created_at", :null => false
@@ -87,9 +87,12 @@ ActiveRecord::Schema.define(:version => 20130815160051) do
 
   create_table "programs", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.integer  "server_id"
+    t.boolean  "folder_specific"
+    t.string   "abs_path"
+    t.string   "dyna_type"
   end
 
   create_table "roles", :force => true do |t|

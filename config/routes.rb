@@ -1,13 +1,22 @@
 Steelers::Application.routes.draw do
 
-
   authenticated :user do
      mount Precious::App, at: 'wiki'
      root :to => 'home#index'
      resources :config_templates
      resources :admins
      resources :servers
-     resources :programs
+     resources :programs do
+        member do
+           post :toggle
+           post :change_type
+        end
+     end
+     get "home/job_landing"
+     get "home/new_upload"
+     get "home/new_oth"
+     get "home/new_ls"
+     post "home/job_redirect"
   end
   
   devise_for :users

@@ -33,3 +33,6 @@ tags
 /wiki
 /uploads
 /bin
+
+# Ignore secret token
+/config/initializers/secret_token.rb

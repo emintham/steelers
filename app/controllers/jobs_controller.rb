@@ -41,7 +41,8 @@ class JobsController < ApplicationController
   end
 
   def run
-    @job = User.find(params[:user_id]).jobs.find(params[:id])
+    @user = User.find(params[:user_id])
+    @job = @user.jobs.find(params[:id])
     flash[:notice] = 'Starting job now...'
     @job.run
     flash[:notice] = 'Job completed!'

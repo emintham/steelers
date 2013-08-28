@@ -37,7 +37,7 @@ class ProgramsController < ApplicationController
     @program.destroy
 
     respond_to do |format|
-      format.html { redirect_to root_url }
+      format.html { redirect_to admins_path }
       format.json { head :no_content }
     end
   end
@@ -47,4 +47,25 @@ class ProgramsController < ApplicationController
     @program = Program.new
   end
 
+  def toggle
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
+    @program = Program.find(params[:id])
+    if @program.toggle
+      flash[:notice] = "Successfully toggled #{@program.name}'s folder specificity!"
+    else
+      flash[:error] = "An error occurred."
+    end
+    redirect_to admins_path
+  end
+
+  def change_type
+    authorize! :index, @user, :message => 'Not authorized as administrator.'
+    @program = Program.find(params[:id])
+    if @program.change_type
+      flash[:notice] = "Successfully changed #{@program.name}'s type!"
+    else
+      flash[:error] = "An error occurred."
+    end
+    redirect_to admins_path
+  end
 end

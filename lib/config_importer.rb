@@ -1,24 +1,26 @@
+require 'error_helper'
+
+# //////////////////////////////////////////////////////////////////////
 # Class to import config instances into app given its template
 # Assumptions: 
 #   - config to be imported is properly formatted
 #       eg. config files from current users of cluster before web app
 #   - current assumed comment delimiters are ! #
 #   - uploaded files reside in uploads/:user_id/
+# //////////////////////////////////////////////////////////////////////
 class ConfigImporter
+  include Dev
+
   attr_reader :success    # to indicate to outside functions whether
                           # import was successful
 
-  def dlog (str)
-    Rails.logger.info str
-  end
-
   # Inputs: user's id, template's id, absolute path of input file
   # for absolute path of input file, use userfile.upload.path
-  def initialize(user, template, input_file)
-    dlog "<DEV INFO> ConfigImporter: initializing config importer..."
-    dlog "<DEV INFO> ConfigImporter: user = #{user.name}" if user
-    dlog "<DEV INFO> ConfigImporter: input file = #{input_file}" if input_file
-    dlog "<DEV INFO> ConfigImporter: template = #{template.name}" if template
+  def initialize(user, template, input_file,original_filename)
+    log "ConfigImporter: initializing config importer..."
+    log "ConfigImporter: user = #{user.name}" if user
+    log "ConfigImporter: input file = #{input_file}" if input_file
+    log "ConfigImporter: template = #{template.name}" if template
 
     @user         = user if user
     @filename     = File.basename(input_file) if input_file
@@ -29,13 +31,14 @@ class ConfigImporter
     @flag         = false             # has all checks been successful?
     @value_array  = Array.new
     @success      = false
+    @original_filename = original_filename
   end
 
   def filecheck                   # should run before all other tests
-    dlog "<DEV INFO> ConfigImporter: checking input file..."
+    log "ConfigImporter: checking input file..."
 
     unless File.exists?(@filepath)
-      Rails.logger.info "<DEV INFO> #{@filepath} is not a valid file!"
+      Rails.logger.info "#{@filepath} is not a valid file!"
       @flag = false
     else
       @flag = true
@@ -47,7 +50,7 @@ class ConfigImporter
   end
 
   def import
-    dlog "<DEV INFO> ConfigImporter: Importing configuration values from file..."
+    log "ConfigImporter: Importing configuration values from file..."
 
     # NOTE: will strip ALL commas and whitespace
     File.open(@filepath, 'r').each_line do |line|
@@ -57,10 +60,10 @@ class ConfigImporter
   end
 
   def arglen_check
-    dlog "<DEV INFO> ConfigImporter: checking number of arguments in imported file..."
+    log "ConfigImporter: checking number of arguments in imported file..."
 
     if @value_array.length != @fields.length
-      dlog "# of imported values does not match # of expected values"
+      log "# of imported values does not match # of expected values"
       @flag &= false
     else
       @flag &= true
@@ -70,7 +73,7 @@ class ConfigImporter
   def arg_copy
     arglen_check()
     if @flag
-      dlog "<DEV INFO> ConfigImporter: copying imported values into new conf..."
+      log "ConfigImporter: copying imported values into new conf..."
 
       @value_array.each_index do |index|
         param_name = @fields[index].name
@@ -78,12 +81,12 @@ class ConfigImporter
         @params[param_name] = param_value
       end
     else
-      dlog "<DEV INFO> ConfigImporter: flag not set to true! Did tests pass?"
+      log "ConfigImporter: flag not set to true! Did tests pass?"
     end
   end
 
   def execute
-    dlog "<DEV INFO> ConfigImporter: attempting import..."
+    log "ConfigImporter: attempting import..."
 
     # ---------------------- Atomic operation -------------------------
     # | Checks have to be atomic to ensure integrity
@@ -95,13 +98,13 @@ class ConfigImporter
       arg_copy()
 
       if @user
-        Conf.create(name: @filename, config_template_id: @template.id, properties: @params, user_id: @user.id)
+        Conf.create(name: @original_filename, config_template_id: @template.id, properties: @params, user_id: @user.id)
       else
-        Conf.create(name: @filename, config_template_id: @template.id, properties: @params)
+        log "ConfigImporter ERROR in execute. @user not defined!"
       end
       @success = true unless @flag == false
     end
 
-    dlog "<DEV INFO> ConfigImporter: import completed!"
+    log "ConfigImporter: import completed!"
   end
 end
