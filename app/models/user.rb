@@ -47,13 +47,13 @@ class User < ActiveRecord::Base
   def create_dir
      log "User Model: creating a user directory for #{user_id}"
 
-     user_dir = Rails.root.join('u', user_id).to_s
+     user_dir = Rails.root.join('u',id).to_s
      permission = 0700
      if File.directory?(user_dir)
         log "User Model: #{user_id} already has directory!"
      else
         Dir.mkdir(user_dir,permission)
-        log "User Model: <RAILS_ROOT>/u/#{user_id}/ created!"
+        log "User Model: <RAILS_ROOT>/u/#{id}/ created!"
      end
   end
 end

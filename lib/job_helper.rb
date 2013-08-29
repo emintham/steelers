@@ -9,7 +9,7 @@ class JobHelper
   include Dev       # For logging
 
   def initialize(job_instance)
-    @job      = job_instance if job_instance
+    @job      = Job.find(job_instance.id) if job_instance
     @user     = User.find(@job.user_id) if @job
     @program  = Program.find(@job.program_id) if @job
     @prog_name = @program.name if @program

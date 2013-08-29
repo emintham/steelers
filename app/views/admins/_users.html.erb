@@ -1,3 +1,4 @@
+<% require 'admin_helper' %>
 <div class="accordion-group"> <!-- Users Index -->
   <div class="accordion-heading">
     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
@@ -15,6 +16,7 @@
             <th>Affiliation</th>
             <th>Specialisation</th>
             <th>Num Jobs</th>
+            <th>Usage</th>
             <th>Registered</th>
             <th>Role</th>
             <th></th>
@@ -30,10 +32,14 @@
               <td><%= user.affiliation %></td>
               <td><%= user.specialisation %></td>
               <td><%= user.num_jobs %></td>
+              <td>
+                <% h = AdminHelper::Usage.new(user) %>
+                <%= number_to_human_size(h.total) %>
+              </th>
               <td><%= user.created_at.to_date %></td>
               <td><%= user.roles.first.name.titleize unless user.roles.first.nil? %></td>
               <td>
-                <%= link_to("Delete User", user_path(user), :data => { :confirm => "Are you sure?" }, :method => "delete", :class => 'btn btn-mini') unless user == current_user %>
+                <%= link_to("Delete", user_path(user), :data => { :confirm => "Are you sure?" }, :method => "delete", :class => 'btn btn-mini') unless user == current_user %>
               </td>
             </tr>
           <% end %>
