@@ -60,7 +60,7 @@ namespace :custom_tasks do
     puts "------------ Task: Checking user directories in /u -------------"
     puts " Checking /u ..."
     User.all.each do |user|
-      user_dir = Rails.root.join('u', user.id).to_s
+      user_dir = Rails.root.join('u', user.id.to_s).to_s
       if File.directory?(user_dir)
         puts "  #{user.user_id} has directory! Nothing done."
       else
@@ -153,7 +153,6 @@ Retrieves programs
 DESC
   task :refresh => :environment do
     Rake::Task['db:reset'].execute
-    Rake::Task['db:seed'].execute
     commands = ['reset', 'clear_templates', 'global_dir', 
       'check_user_dir', 'retrieve_program']
     commands.each do |sub|
