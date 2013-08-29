@@ -60,7 +60,7 @@ namespace :custom_tasks do
     puts "------------ Task: Checking user directories in /u -------------"
     puts " Checking /u ..."
     User.all.each do |user|
-      user_dir = Rails.root.join('u', user.user_id).to_s
+      user_dir = Rails.root.join('u', user.id).to_s
       if File.directory?(user_dir)
         puts "  #{user.user_id} has directory! Nothing done."
       else

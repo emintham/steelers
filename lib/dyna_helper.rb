@@ -25,8 +25,8 @@ class DynaHelper
   include Dev     # for logging
 
   def initialize (user, job, filename, flag)
-    @user = user if user
-    @job = job if job
+    @user = User.find(user.id) if user
+    @job = Job.find(job.id) if job
     @filepath = Rails.root.join('uploads', @user.id.to_s, filename).to_s if (@user && filename)
     @program = Program.find(@job.program_id) if @job
     if flag == 'smp' || flag == 'mpp'
