@@ -35,7 +35,7 @@
                 <td><%= job.completed ? "True" : "False" %></td>
                 <td>
                   <% if job.status %>
-                    <%= link_to 'Stop job', user_job_path(@user, job),
+                    <%= link_to 'Delete job', user_job_path(@user, job),
                       :data => { :confirm => 'Are you sure?' }, 
                       :method => :delete, :class => 'btn btn-mini' %>
                   <% elsif !job.completed %>
