@@ -65,20 +65,20 @@ namespace :custom_tasks do
         puts "  #{user.user_id} has directory! Nothing done."
       else
         puts "  #{user.user_id} does not have directory!"
-        Dir.mkdir(user_dir,permission) unless File.directory?(user_dir)
-        puts "  /u/#{user.user_id} created!\n\n"
+        FileUtils.mkdir_p user_dir unless File.directory?(user_dir)
+        puts "  #{user_dir} created!\n\n"
       end
     end
 
     puts " Checking /confs ..."
     User.all.each do |user|
-      user_dir = Rails.root.join('confs', user.id.to_s).to_s
+      user_dir = Rails.root.join('confs', user.id.to_s, 'dyna').to_s
       if File.directory?(user_dir)
         puts "  #{user.user_id} has directory! Nothing done."
       else
         puts "  #{user.user_id} does not have directory!"
-        Dir.mkdir(user_dir,permission) unless File.directory?(user_dir)
-        puts "  /confs/#{user.id} created!\n\n"
+        FileUtils.mkdir_p user_dir unless File.directory?(user_dir)
+        puts "  #{user_dir} created!\n\n"
       end
     end
     

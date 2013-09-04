@@ -5,9 +5,7 @@ class Job < ActiveRecord::Base
   include Dev           # for logging
 
   attr_accessible :description, :input, :user_id, :server_id, :status,
-     :program_id
-
-  attr_accessor :num_procs
+     :program_id, :num_procs
 
   # --------------- Associations ---------------------------------------
   belongs_to :user,
@@ -28,10 +26,10 @@ class Job < ActiveRecord::Base
   # Calls the job helper to execute job based on job's type (is it ls-dyna?
   #  is it mpi? etc.) and parameters
   def run
-     user = User.find(:user_id).user_id
+     user = User.find(user_id).user_id
      if completed
-        redirect_to root_url, :alert => 'Job has already been completed!'
         log "Job Model: #{user} attempted to execute completed job."
+        return true
      else
         # initialize JobHelper based on current instance
         j = JobHelper.new(self)     
@@ -43,10 +41,10 @@ class Job < ActiveRecord::Base
            update_attribute(:completed, true)
            update_attribute(:output, output)
            log "Job Model: Job #{id} by User #{user} completed!"
-           redirect_to root_url, :notice => 'Job submitted!'
+           return true
         else
            log "Job Model ERROR: unable to complete job!"
-           redirect_to root_url, :alert => 'Error in submitting job! Please contact administrator.'
+           return false
         end
      end
   end

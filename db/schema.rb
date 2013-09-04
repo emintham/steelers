@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130828175809) do
+ActiveRecord::Schema.define(:version => 20130903024849) do
 
   create_table "admins", :force => true do |t|
     t.datetime "created_at", :null => false
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20130828175809) do
     t.integer  "server_id"
     t.integer  "program_id"
     t.boolean  "completed"
+    t.integer  "num_procs"
   end
 
   create_table "logs", :force => true do |t|

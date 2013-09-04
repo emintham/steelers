@@ -26,16 +26,23 @@
           <tbody>
             <% @user.jobs.each do |job| %>
               <tr>
-                <td><%= job.server.name %></td>
-                <td><%= job.program.name %></td>
-                <td><%= File.basename(job.input) %></td>
-                <td><%= job.description %></td>
+                <td><%= job.server ? job.server.name : "No server defined" %></td>
+                <td><%= job.program ? job.program.name : "No program defined" %></td>
+                <td>
+                  <% if job.program.folder_specific %>
+                    <% userfile = Userfile.find(job.input) %>
+                    <%= userfile.upload_file_name %>
+                  <% else %>
+                    <%= job.input ? File.basename(job.input) : "No input defined" %>
+                  <% end %>
+                </td>
+                <td><%= job.description ? job.description : "" %></td>
                 <td><%= job.status ? "Running" : "Stopped" %></td>
                 <td><%= job.created_at.to_date %></td>
                 <td><%= job.completed ? "True" : "False" %></td>
                 <td>
                   <% if job.status %>
-                    <%= link_to 'Stop job', user_job_path(@user, job),
+                    <%= link_to 'Delete job', user_job_path(@user, job),
                       :data => { :confirm => 'Are you sure?' }, 
                       :method => :delete, :class => 'btn btn-mini' %>
                   <% elsif !job.completed %>
@@ -54,10 +61,6 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>
-              <%= link_to 'Create job', new_user_job_path(@user),
-                :class => 'btn btn-mini' %>
-            </td>
             <td></td>
             </tr>
           </tbody>

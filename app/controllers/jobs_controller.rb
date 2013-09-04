@@ -44,9 +44,11 @@ class JobsController < ApplicationController
     @user = User.find(params[:user_id])
     @job = @user.jobs.find(params[:id])
     flash[:notice] = 'Starting job now...'
-    @job.run
-    flash[:notice] = 'Job completed!'
-
+    if @job.run
+      flash[:notice] = 'Success.'
+    else
+      flash[:error] = "Error."
+    end
     redirect_to root_url
   end
 end

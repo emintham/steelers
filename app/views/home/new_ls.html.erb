@@ -6,7 +6,9 @@
               :label_method => :name,
               :value_method => :id %>
   <% lsdynas = Program.all.find_all { |p| p.folder_specific } %>
-  <%= f.input :program, :collection => lsdynas %>
+  <%= f.input :program_id, :collection => lsdynas,
+    :label_method => :name, :value_method => :id,
+    :label => "Program" %>
   <% zipfiles = @user.userfiles.find_all { |z| z.upload_content_type == "application/zip" } %>
   <%= f.input :input, :collection => zipfiles, 
     :label => "Input zip", :label_method => :upload_file_name,

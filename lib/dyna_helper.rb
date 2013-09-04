@@ -27,10 +27,11 @@ class DynaHelper
   def initialize (user, job, filename, flag)
     @user = User.find(user.id) if user
     @job = Job.find(job.id) if job
+    @filename = filename
     @filepath = Rails.root.join('uploads', @user.id.to_s, filename).to_s if (@user && filename)
     @program = Program.find(@job.program_id) if @job
     if flag == 'smp' || flag == 'mpp'
-      @type = flag
+      @flag = flag
     else
       log "DynaHelper ERROR in initialize => flag = #{flag}"
     end
@@ -49,11 +50,14 @@ class DynaHelper
 
   def cp
     @new_filepath = Rails.root.join('confs',@user.id.to_s,'dyna')
-    if Dir.exist?(new_filepath.to_s)
+    if Dir.exist?(@new_filepath.to_s)
       @new_filepath = @new_filepath.join(@job.id.to_s).to_s
       permission = 0700
 
-      FileUtils.mkdir(@new_filepath,permission)
+      log "DynaHelper creating #{@new_filepath}"
+      FileUtils.mkdir_p @new_filepath
+
+      log "DynaHelper copying #{@filepath} to #{@new_filepath}"
       FileUtils.cp @filepath, @new_filepath
 
       log "DynaHelper copied #{@filepath} to #{@new_filepath}"
@@ -68,23 +72,29 @@ class DynaHelper
   #  extraction code from https://bitbucket.org/winebarrel/zip-ruby/wiki/Home
   def unzip
     if @new_filepath
-      log "DynaHelper extracting zip in #{@new_filepath}"
-      Zip::Archive.open(@new_filepath) do |ar|
-        ar.each do |zf|
-          if zf.directory?
-            FileUtils.mkdir_p(zf.name)
-          else
-            dirname = File.dirname(zf.name)
-            FileUtils.mkdir_p(dirname) unless File.exist?(dirname)
+      log "DynaHelper chdir into #{@new_filepath}"
 
-            open(f.name, 'wb') do |f|
-              f << zf.read
+      Dir.chdir(@new_filepath) do
+        @new_filepath += "/#{@filename}"
+        log "DynaHelper extracting zip in #{@new_filepath}"
+        Zip::Archive.open(@new_filepath) do |ar|
+          ar.each do |zf|
+            if zf.directory?
+              FileUtils.mkdir_p(zf.name)
+            else
+              dirname = File.dirname(zf.name)
+              FileUtils.mkdir_p(dirname) unless File.exist?(dirname)
+
+              open(zf.name, 'wb') do |f|
+                f << zf.read
+              end
             end
           end
         end
-      end
       
-      log "DynaHelper finished extracting #{@new_filepath}"
+        log "DynaHelper finished extracting #{@new_filepath}"
+      end
+
       return true
     else
       return report_error
@@ -105,9 +115,11 @@ class DynaHelper
   def verify_deck
     if @user && @job
       path = Rails.root.join('confs',@user.id.to_s,'dyna',@job.id.to_s,'*.k').to_s
+      log "DynaHelper: verifying deck file at #{path}"
       glob = Dir.glob(path)
       if !glob.empty? && glob.size == 1
         @deck = File.basename(glob[0])
+        log "DynaHelper: deck found: #{@deck}"
       else
         log "DynaHelper ERROR: either more than one .k files found or none found!"
         log "Found: #{glob}"
@@ -126,10 +138,12 @@ class DynaHelper
   def create_config_mpp
     if @program && @job
       @new_file = Rails.root.join('confs',@user.id.to_s,'dyna',@job.id.to_s,'sub_lsdynampp')
-      File::new(@new_file,'w') do |f|
+      log "DynaHelper: creating new mpp config at #{@new_file}"
+
+      File::open(@new_file,'w') do |f|
         f << <<-HEADER
 #!/bin/bash
-#\$ -N #{@job.name}
+#\$ -N steelers#{@job.id}
 #\$ -S /bin/bash
 #\$ -cwd          ## use current working directory for batch execution
 #\$ -j y          ## Stream error output into standard output   
@@ -155,10 +169,12 @@ HEADER
   def create_config_smp
     if @program && @job
       @new_file = Rails.root.join('confs',@user.id.to_s,'dyna',@job.id.to_s,'sub_lsdynasmp')
-      File::new(@new_file,'w') do |f|
+      log "DynaHelper: Creating new smp config at #{@newfile}"
+
+      File::open(@new_file,'w') do |f|
         f << <<-HEADER
 #!/bin/bash
-#\$ -N #{@job.name}
+#\$ -N steelers#{@job.id}
 #\$ -S /bin/bash
 #\$ -cwd          ## use current working directory for batch execution
 #\$ -j y          ## Stream error output into standard output   
@@ -181,9 +197,15 @@ HEADER
   def expand
     precreate_success = cp && unzip && rm_zip && verify_deck
     if precreate_success && @flag == 'smp'
+      log "DynaHelper: precreate success, creating SMP config"
       return create_config_smp
     elsif precreate_success && @flag == 'mpp'
+      log "DynaHelper: precreate success, creating MPP config"
       return create_config_mpp
+    else
+      log "DynaHelper: either precreate failed or @flag not set!"
+      log "DynaHelper: flag = #{@flag}"
+      return false
     end
   end
 end

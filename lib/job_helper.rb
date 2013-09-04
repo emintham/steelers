@@ -17,12 +17,12 @@ class JobHelper
     @input    = @job.input if @job
 
     # Set type of program
-    if @job && @job.folder_specific
+    if @job && @program && @program.folder_specific
       @type = :dyna
-    elsif @job && !@job.folder_specific
+    elsif @job && @program && !@program.folder_specific
       @type = :other
     else
-      log "JobHelper ERROR: #{@job.name}'s folder specificity not defined!"
+      log "JobHelper ERROR: #{@program.name}'s folder specificity not defined!"
     end
 
     generate_output_name
@@ -57,7 +57,9 @@ class JobHelper
   # We'll also assume users do not have any non-submission files that
   # matches sub_*
   def execute_dyna(num_procs)
-    d = DynaHelper.new(@user,@job,@job.input,@program.dyna_type)
+    @userfile = Userfile.find(@job.input) if @job
+    filename = @userfile.upload_file_name + ".#{@userfile.id}"
+    d = DynaHelper.new(@user,@job,filename,@program.dyna_type)
     log "JobHelper: Calling DynaHelper to set up directories"
 
     if d.expand
@@ -66,8 +68,12 @@ class JobHelper
       # Set up variables and execute
       @base_path = Rails.root.join('confs',@user.id.to_s,'dyna',@job.id.to_s) if @job && @user
       @input_path = @base_path.to_s if @job && @user
+      log "JobHelper: chdir into #{@input_path}"
+
       Dir.chdir(@input_path) do
         files = Dir.glob("sub_*")
+        log "JobHelper: found #{files}"
+
         submission = files.first if !files.empty?
         %x(qsub -pe mpi #{@job.num_procs} #{submission} > ex.out 2> ex.err &)
 
@@ -87,7 +93,7 @@ class JobHelper
   def execute
     case @type
     when :dyna
-      return execute_dyna
+      return execute_dyna(@job.num_procs)
     when :other
       return execute_other
     else
